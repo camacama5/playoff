@@ -1,93 +1,129 @@
-<style>
-    /* עיצוב כללי של המודאל */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85) !important; z-index: 2000; overflow-y: auto; }
-    
-    /* תיבת התוכן המרכזית - צבע הרקע המדויק של ה-index */
-    .hp-modal-content { 
-        background-color: #e8ebf0 !important; 
-        margin: 30px auto; 
-        padding: 30px; 
-        width: 90%; 
-        max-width: 1250px; 
-        border-radius: 15px; 
-        position: relative; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>מי מילא תחזית?</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+        .box { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: right; }
+        tr:hover { background: #f9f9f9; cursor: pointer; }
+        
+        .hp-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; overflow-y: auto; }
+        .hp-modal-content { background-color: #e8ebf0; margin: 2% auto; padding: 30px; width: 92%; max-width: 1250px; border-radius: 15px; position: relative; }
+        .hp-close { position: absolute; left: 25px; top: 15px; font-size: 40px; cursor: pointer; color: #06274c; font-weight: bold; }
 
-    /* כפתור סגירה */
-    .hp-close { position: absolute; left: 25px; top: 15px; font-size: 40px; cursor: pointer; color: #06274c; font-weight: bold; line-height: 1; }
+        .hp-bracket-grid { display: flex; justify-content: center; align-items: center; gap: 20px; direction: ltr; margin-top: 20px; }
+        .hp-col { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 20px; height: 580px; }
+        
+        .hp-card { background: white; border-radius: 8px; border-right: 5px solid #06274c; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; direction: rtl; width: 235px; }
+        .hp-card-header { background: #06274c; color: white; padding: 6px; font-size: 11px; text-align: center; font-weight: bold; }
+        
+        .hp-team-line { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; }
+        .hp-team-info { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 14px; color: #333; }
+        .hp-team-logo { width: 25px; height: 25px; object-fit: contain; }
+        .hp-score-val { color: #cc0000; font-size: 20px; font-weight: 900; }
 
-    /* מבנה הבראקט - סידור גריד נקי */
-    .hp-bracket-grid { display: flex; justify-content: center; align-items: center; gap: 20px; direction: ltr; margin-top: 25px; }
-    .hp-col { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 20px; height: 550px; }
-    
-    /* עיצוב כרטיסיית משחק */
-    .hp-card { 
-        background: white !important; 
-        border-radius: 8px !important; 
-        border: none !important; 
-        border-right: 5px solid #06274c !important; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; 
-        overflow: hidden; 
-        direction: rtl;
-        width: 210px;
-    }
-    
-    .hp-card-header { background: #06274c !important; color: white !important; padding: 6px; font-size: 11px; text-align: center; font-weight: bold; }
-    
-    .hp-team-line { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #eee; }
-    .hp-team-name { font-weight: bold; font-size: 14px; color: #333; }
-    .hp-score-val { color: #cc0000 !important; font-size: 20px !important; font-weight: 900 !important; }
+        .hp-center-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+        .hp-winner-box { background: white; border: 3px solid #cc0000; padding: 20px; border-radius: 12px; text-align: center; width: 280px; }
+        .hp-winner-name { color: #cc0000; font-size: 28px; font-weight: 900; }
+        .hp-card.hp-final { border-right-color: #cc0000; }
+    </style>
+</head>
+<body>
 
-    /* אזור המרכז - זוכה וגמר */
-    .hp-center-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
-    .hp-winner-display { 
-        background: white !important; 
-        border: 3px solid #cc0000 !important; 
-        padding: 25px; 
-        border-radius: 12px; 
-        text-align: center; 
-        width: 280px;
-        box-shadow: 0 5px 20px rgba(204,0,0,0.2);
-    }
-    .hp-winner-label { color: #06274c; font-size: 16px; font-weight: bold; margin-bottom: 10px; display: block; }
-    .hp-winner-name { color: #cc0000 !important; font-size: 28px !important; font-weight: 900 !important; }
-    
-    /* החרגה למשחק הגמר - פס אדום */
-    .hp-card.is-final { border-right-color: #cc0000 !important; }
-</style>
+    <div class="box">
+        <h2>מי מילא תחזית?</h2>
+        <table id="mainTable">
+            <thead><tr><th>שם המשתתף</th><th>תאריך</th></tr></thead>
+            <tbody id="list"></tbody>
+        </table>
+    </div>
 
-<script type="module">
-    // ... (כאן ה-import וה-Firebase Config שלך נשארים אותו דבר) ...
+    <div id="m" class="hp-modal" onclick="closeM()">
+        <div class="hp-modal-content" onclick="event.stopPropagation()">
+            <span class="hp-close" onclick="closeM()">&times;</span>
+            <h2 id="mt" style="color: #06274c; margin-bottom: 10px;"></h2>
+            <div id="bracketBody" class="hp-bracket-grid"></div>
+        </div>
+    </div>
 
-    window.closeM = () => document.getElementById('m').style.display = 'none';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-    // פונקציית הטעינה והרינדור בתוך snap.forEach:
-    tr.onclick = () => {
-        const d = doc.data();
-        document.getElementById('mt').innerText = "התחזית של: " + d.userName;
-        const b = d.data;
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", 
+            authDomain: "playoffhapoel.firebaseapp.com", 
+            projectId: "playoffhapoel", 
+            storageBucket: "playoffhapoel.firebasestorage.app", 
+            messagingSenderId: "263243431887", 
+            appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" 
+        };
+        const db = getFirestore(initializeApp(firebaseConfig));
 
-        const renderGame = (id, label, extraClass = '') => `
-            <div class="hp-card ${extraClass}">
-                <div class="hp-card-header">${label}</div>
-                <div class="hp-team-line"><span class="hp-team-name">${b[id].t1}</span><span class="hp-score-val">${b[id].s1}</span></div>
-                <div class="hp-team-line"><span class="hp-team-name">${b[id].t2}</span><span class="hp-score-val">${b[id].s2}</span></div>
-            </div>`;
+        // --- הגדרת הלוגו לפי השם שנתת ---
+        const teamLogos = {
+            "הפועל חיפה": "logos/logoshapoel_haifa.png"
+        };
 
-        document.getElementById('bracketBody').innerHTML = `
-            <div class="hp-col">${renderGame('q1','משחק 1')} ${renderGame('q4','משחק 4')}</div>
-            <div class="hp-col">${renderGame('sf1','חצי גמר 1')}</div>
-            <div class="hp-center-area">
-                <div class="hp-winner-display">
-                    <span class="hp-winner-label">הזוכה הגדולה:</span>
-                    <span class="hp-winner-name">${d.winner || '---'}</span>
-                </div>
-                ${renderGame('f','סדרת הגמר', 'is-final')}
-            </div>
-            <div class="hp-col">${renderGame('sf2','חצי גמר 2')}</div>
-            <div class="hp-col">${renderGame('q2','משחק 2')} ${renderGame('q3','משחק 3')}</div>
-        `;
-        document.getElementById('m').style.display = 'block';
-    };
-</script>
+        window.closeM = () => document.getElementById('m').style.display = 'none';
+
+        async function loadResults() {
+            const snap = await getDocs(query(collection(db, "brackets"), orderBy("date", "desc")));
+            const list = document.getElementById('list');
+            list.innerHTML = "";
+
+            snap.forEach(doc => {
+                const d = doc.data();
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${d.userName}</td><td>${d.date.toDate().toLocaleDateString('he-IL')}</td>`;
+                
+                tr.onclick = () => {
+                    document.getElementById('mt').innerText = "התחזית של: " + d.userName;
+                    const b = d.data;
+
+                    const renderGame = (id, label, cls = '') => {
+                        const getLogoHtml = (teamName) => {
+                            const path = teamLogos[teamName];
+                            // אם יש נתיב ללוגו במילון, נציג אותו. אם לא, נשים ריבוע ריק לשמירה על המקום.
+                            return path ? `<img src="${path}" class="hp-team-logo" onerror="this.style.opacity='0'">` : `<div style="width:25px"></div>`;
+                        };
+
+                        return `
+                        <div class="hp-card ${cls}">
+                            <div class="hp-card-header">${label}</div>
+                            <div class="hp-team-line">
+                                <div class="hp-team-info">${getLogoHtml(b[id].t1)} ${b[id].t1}</div>
+                                <span class="hp-score-val">${b[id].s1}</span>
+                            </div>
+                            <div class="hp-team-line">
+                                <div class="hp-team-info">${getLogoHtml(b[id].t2)} ${b[id].t2}</div>
+                                <span class="hp-score-val">${b[id].s2}</span>
+                            </div>
+                        </div>`;
+                    };
+
+                    document.getElementById('bracketBody').innerHTML = `
+                        <div class="hp-col">${renderGame('q1','משחק 1')} ${renderGame('q4','משחק 4')}</div>
+                        <div class="hp-col">${renderGame('sf1','חצי גמר 1')}</div>
+                        <div class="hp-center-area">
+                            <div class="hp-winner-box">
+                                <span style="color:#06274c; font-weight:bold;">הזוכה הגדולה:</span><br>
+                                <span class="hp-winner-name">${d.winner || '---'}</span>
+                            </div>
+                            ${renderGame('f','סדרת הגמר', 'hp-final')}
+                        </div>
+                        <div class="hp-col">${renderGame('sf2','חצי גמר 2')}</div>
+                        <div class="hp-col">${renderGame('q2','משחק 2')} ${renderGame('q3','משחק 3')}</div>
+                    `;
+                    document.getElementById('m').style.display = 'block';
+                };
+                list.appendChild(tr);
+            });
+        }
+        loadResults();
+    </script>
+</body>
+</html>
