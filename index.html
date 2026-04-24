@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תחזית פלייאוף - הליגה הלאומית</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        h1 { text-align: center; color: #1a73e8; }
+        .bracket-container { display: flex; justify-content: space-between; gap: 20px; max-width: 1200px; margin: 0 auto; overflow-x: auto; }
+        .column { flex: 1; min-width: 280px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+        .matchup { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .matchup h3 { margin: 0 0 10px 0; font-size: 14px; color: #555; text-align: center; background: #f8f9fa; padding: 5px; border-radius: 4px; }
+        .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .team-name { font-weight: bold; font-size: 15px; }
+        input[type="number"] { width: 50px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        .submit-section { max-width: 400px; margin: 40px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .submit-section input[type="text"] { width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.3s; }
+        button:hover { background-color: #1557b0; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        #deadlineMsg { color: #d93025; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>תחזית פלייאוף - הליגה הלאומית</h1>
+
+    <div class="bracket-container">
+        <div class="column" id="quarter-finals">
+            <div class="matchup" id="m1">
+                <h3>רבע גמר 1 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">מכבי רחובות</span><input type="number" id="qf1_t1" min="0" max="2" value="0"></div>
+                <div class="team-row"><span class="team-name">א.ס רמת השרון</span><input type="number" id="qf1_t2" min="0" max="2" value="0"></div>
+            </div>
+            <div class="matchup" id="m2">
+                <h3>רבע גמר 2 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">עירוני נהריה</span><input type="number" id="qf2_t1" min="0" max="2" value="0"></div>
+                <div class="team-row"><span class="team-name">עוטף דרום</span><input type="number" id="qf2_t2" min="0" max="2" value="0"></div>
+            </div>
+            <div class="matchup" id="m3">
+                <h3>רבע גמר 3 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">הפועל חיפה</span><input type="number" id="qf3_t1" min="0" max="2" value="0"></div>
+                <div class="team-row"><span class="team-name">אליצור שומרון</span><input type="number" id="qf3_t2" min="0" max="2" value="0"></div>
+            </div>
+            <div class="matchup" id="m4">
+                <h3>רבע גמר 4 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">מכבי אשדוד</span><input type="number" id="qf4_t1" min="0" max="2" value="0"></div>
+                <div class="team-row"><span class="team-name">אשקלון</span><input type="number" id="qf4_t2" min="0" max="2" value="0"></div>
+            </div>
+        </div>
+
+        <div class="column" id="semi-finals">
+            <div class="matchup" id="sf1">
+                <h3>חצי גמר 1 (הטוב מ-5)</h3>
+                <div class="team-row"><span class="team-name">מנצחת רבע גמר 1</span><input type="number" id="sf1_t1" min="0" max="3" value="0"></div>
+                <div class="team-row"><span class="team-name">מנצחת רבע גמר 4</span><input type="number" id="sf1_t2" min="0" max="3" value="0"></div>
+            </div>
+            <div
