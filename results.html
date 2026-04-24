@@ -25,7 +25,7 @@
         .game-header { background: #06274c; color: white; padding: 6px; font-size: 11px; text-align: center; font-weight: bold; }
         .team-line { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #eee; }
         .team-info { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 14px; color: #333; }
-        .team-logo { width: 25px; height: 25px; object-fit: contain; } /* גודל הלוגו */
+        .team-logo { width: 25px; height: 25px; object-fit: contain; }
         .score-val { color: #cc0000; font-size: 20px; font-weight: 900; }
 
         /* אזור הזוכה במרכז */
@@ -62,7 +62,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-    // הגדרות פיירבייס שלך
     const firebaseConfig = { 
         apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", 
         authDomain: "playoffhapoel.firebaseapp.com", 
@@ -75,9 +74,13 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // מילון הלוגואים - כאן הגדרתי את השם המדויק של הקובץ שלך
+    // מילון הלוגואים - תוודא שהשמות בגרשיים מתאימים בדיוק לשמות הקבצים שהעלית לתיקיית logos
     const teamLogos = {
-        "הפועל חיפה": "logos/logoshapoel_haifa.png"
+        "הפועל חיפה": "logos/logoshapoel_haifa.png",
+        "מכבי רחובות": "logos/rehovot.png",
+        "אליצור שומרון": "logos/shomron.png",
+        "עירוני נהריה": "logos/nahariya.png"
+        // תוסיף כאן את שאר הקבוצות באותו פורמט
     };
 
     window.closeModal = () => {
@@ -107,7 +110,8 @@
         const renderGame = (id, label, isFinal = false) => {
             const getTeamHtml = (teamName, score) => {
                 const logoPath = teamLogos[teamName];
-                const logoImg = logoPath ? `<img src="${logoPath}" class="team-logo" onerror="this.style.display='none'">` : `<div style="width:25px"></div>`;
+                // אם יש לוגו, מציג אותו. אם אין, משאיר רווח ריק
+                const logoImg = logoPath ? `<img src="${logoPath}" class="team-logo" onerror="this.style.opacity='0'">` : `<div style="width:25px"></div>`;
                 return `
                     <div class="team-line">
                         <div class="team-info">${logoImg} <span>${teamName}</span></div>
