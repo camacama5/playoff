@@ -29,11 +29,14 @@
         .team-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid #eee; }
         .team-name { font-weight: bold; font-size: 13px; color: var(--espn-blue); text-align: right; }
         
-        input[type="number"] { width: 45px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 2px; font-weight: bold; font-size: 16px; }
+        input[type="number"] { 
+            width: 50px; padding: 8px; text-align: center; border: 2px solid #ddd; 
+            border-radius: 4px; font-weight: bold; font-size: 18px; color: var(--espn-blue);
+            background: #fff; cursor: pointer;
+        }
         
         .center-column { flex: 0 0 320px; justify-content: center; gap: 40px; }
         
-        /* כותרת זוכה באדום עם כיתוב לבן */
         #winner-container { background: var(--espn-red); color: white; border-radius: 4px; padding: 20px; font-weight: bold; box-shadow: 0 6px 15px rgba(204,0,0,0.3); border: 2px solid white; }
         #final-winner { display: block; font-size: 24px; margin-top: 10px; color: white; }
 
@@ -41,8 +44,8 @@
         .final-box h3 { background: var(--espn-red); }
 
         .submit-section { max-width: 400px; margin: 40px auto; background: white; padding: 20px; border-radius: 4px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-top: 4px solid var(--espn-red); }
-        #pName { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; font-size: 16px; }
-        button { background-color: var(--espn-blue); color: white; border: none; padding: 15px; border-radius: 2px; cursor: pointer; width: 100%; font-weight: bold; font-size: 18px; }
+        #pName { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; font-size: 16px; border-radius: 4px; }
+        button { background-color: var(--espn-blue); color: white; border: none; padding: 15px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 20px; transition: 0.2s; }
         button:hover { background-color: var(--espn-red); }
     </style>
 </head>
@@ -51,18 +54,18 @@
     
     <div class="bracket-container">
         <div class="column qf-column">
-            <div class="matchup"><h3>משחק 1 (עד 2 נצחונות)</h3>
-                <div class="team-row"><span id="t_q1_1" class="team-name">מכבי רחובות</span><input type="number" id="s_q1_1" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div>
-                <div class="team-row"><span id="t_q1_2" class="team-name">א.ס רמת השרון</span><input type="number" id="s_q1_2" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div></div>
-            <div class="matchup"><h3>משחק 4 (עד 2 נצחונות)</h3>
-                <div class="team-row"><span id="t_q4_1" class="team-name">מכבי אשדוד</span><input type="number" id="s_q4_1" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div>
-                <div class="team-row"><span id="t_q4_2" class="team-name">א.ס אליצור אשקלון</span><input type="number" id="s_q4_2" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div></div>
+            <div class="matchup"><h3>משחק 1 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q1_1" class="team-name">מכבי רחובות</span><input type="number" id="s_q1_1" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q1_2" class="team-name">א.ס רמת השרון</span><input type="number" id="s_q1_2" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div></div>
+            <div class="matchup"><h3>משחק 4 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q4_1" class="team-name">מכבי אשדוד</span><input type="number" id="s_q4_1" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q4_2" class="team-name">א.ס אליצור אשקלון</span><input type="number" id="s_q4_2" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div></div>
         </div>
 
         <div class="column">
-            <div class="matchup"><h3>חצי גמר 1 (עד 3 נצחונות)</h3>
-                <div class="team-row"><span id="t_sf1_1" class="team-name">---</span><input type="number" id="s_sf1_1" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div>
-                <div class="team-row"><span id="t_sf1_2" class="team-name">---</span><input type="number" id="s_sf1_2" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div></div>
+            <div class="matchup"><h3>חצי גמר 1 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf1_1" class="team-name">---</span><input type="number" id="s_sf1_1" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_sf1_2" class="team-name">---</span><input type="number" id="s_sf1_2" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div></div>
         </div>
 
         <div class="column center-column">
@@ -70,24 +73,24 @@
                 <div>הזוכה הגדולה:</div>
                 <span id="final-winner">---</span>
             </div>
-            <div class="matchup final-box"><h3>סדרת הגמר (עד 3 נצחונות)</h3>
-                <div class="team-row"><span id="t_f_1" class="team-name">---</span><input type="number" id="s_f_1" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div>
-                <div class="team-row"><span id="t_f_2" class="team-name">---</span><input type="number" id="s_f_2" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div></div>
+            <div class="matchup final-box"><h3>סדרת הגמר (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_f_1" class="team-name">---</span><input type="number" id="s_f_1" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_f_2" class="team-name">---</span><input type="number" id="s_f_2" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div></div>
         </div>
 
         <div class="column">
-            <div class="matchup"><h3>חצי גמר 2 (עד 3 נצחונות)</h3>
-                <div class="team-row"><span id="t_sf2_1" class="team-name">---</span><input type="number" id="s_sf2_1" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div>
-                <div class="team-row"><span id="t_sf2_2" class="team-name">---</span><input type="number" id="s_sf2_2" min="0" max="3" value="0" onchange="limitValue(this, 3); upd()"></div></div>
+            <div class="matchup"><h3>חצי גמר 2 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf2_1" class="team-name">---</span><input type="number" id="s_sf2_1" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_sf2_2" class="team-name">---</span><input type="number" id="s_sf2_2" min="0" max="3" value="0" onkeydown="return false" oninput="upd()"></div></div>
         </div>
 
         <div class="column qf-column">
-            <div class="matchup"><h3>משחק 2 (עד 2 נצחונות)</h3>
-                <div class="team-row"><span id="t_q2_1" class="team-name">עירוני נהריה</span><input type="number" id="s_q2_1" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div>
-                <div class="team-row"><span id="t_q2_2" class="team-name">עוטף דרום</span><input type="number" id="s_q2_2" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div></div>
-            <div class="matchup"><h3>משחק 3 (עד 2 נצחונות)</h3>
-                <div class="team-row"><span id="t_q3_1" class="team-name">הפועל חיפה</span><input type="number" id="s_q3_1" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div>
-                <div class="team-row"><span id="t_q3_2" class="team-name">אליצור שומרון</span><input type="number" id="s_q3_2" min="0" max="2" value="0" onchange="limitValue(this, 2); upd()"></div></div>
+            <div class="matchup"><h3>משחק 2 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q2_1" class="team-name">עירוני נהריה</span><input type="number" id="s_q2_1" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q2_2" class="team-name">עוטף דרום</span><input type="number" id="s_q2_2" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div></div>
+            <div class="matchup"><h3>משחק 3 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q3_1" class="team-name">הפועל חיפה</span><input type="number" id="s_q3_1" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q3_2" class="team-name">אליצור שומרון</span><input type="number" id="s_q3_2" min="0" max="2" value="0" onkeydown="return false" oninput="upd()"></div></div>
         </div>
     </div>
 
@@ -104,13 +107,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // פונקציה להגבלת הערך המוקלד בזמן אמת
-        window.limitValue = function(input, max) {
-            let val = parseInt(input.value) || 0;
-            if (val > max) input.value = max;
-            if (val < 0) input.value = 0;
-        }
-
         window.upd = function() {
             const getWinner = (m) => {
                 const s1 = parseInt(document.getElementById('s_'+m+'_1').value) || 0;
@@ -122,19 +118,13 @@
                 return "---";
             };
 
-            // עדכון חצי גמר ימין (משחקים 1 ו-4)
             document.getElementById('t_sf1_1').innerText = getWinner('q1');
             document.getElementById('t_sf1_2').innerText = getWinner('q4');
-
-            // עדכון חצי גמר שמאל (משחקים 2 ו-3)
             document.getElementById('t_sf2_1').innerText = getWinner('q2');
             document.getElementById('t_sf2_2').innerText = getWinner('q3');
             
-            // עדכון גמר
             document.getElementById('t_f_1').innerText = getWinner('sf1');
             document.getElementById('t_f_2').innerText = getWinner('sf2');
-
-            // עדכון הזוכה במרכז
             document.getElementById('final-winner').innerText = getWinner('f');
         };
 
