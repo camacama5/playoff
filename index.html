@@ -107,8 +107,10 @@
 
         window.handleInput = function(el, target, otherId) {
             let val = parseInt(el.value);
+            if (isNaN(val)) val = 0;
             if (val > target) el.value = target;
             if (val < 0) el.value = 0;
+            
             const other = document.getElementById(otherId);
             const otherVal = parseInt(other.value) || 0;
             if (parseInt(el.value) === target && otherVal === target) {
@@ -119,14 +121,20 @@
 
         function upd() {
             const getWin = (m, target) => {
-                const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
-                const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
+                const s1El = document.getElementById(`s_${m}_1`);
+                const s2El = document.getElementById(`s_${m}_2`);
+                if (!s1El || !s2El) return "---";
+
+                const s1 = parseInt(s1El.value) || 0;
+                const s2 = parseInt(s2El.value) || 0;
                 
-                let t1, t2;
+                let t1 = "---", t2 = "---";
                 if (m.startsWith('q')) {
-                    // תיקון: שליפת השם מתוך ה-team-info שנמצא לפני ה-input
-                    t1 = document.getElementById(`s_${m}_1`).previousElementSibling.querySelector('.team-name').innerText;
-                    t2 = document.getElementById(`s_${m}_2`).previousElementSibling.querySelector('.team-name').innerText;
+                    // תיקון בטוח לשליפת השם:
+                    const row1 = s1El.closest('.team-row');
+                    const row2 = s2El.closest('.team-row');
+                    if(row1) t1 = row1.querySelector('.team-name').innerText;
+                    if(row2) t2 = row2.querySelector('.team-name').innerText;
                 } else {
                     t1 = document.getElementById(`t_${m}_1`).innerText;
                     t2 = document.getElementById(`t_${m}_2`).innerText;
@@ -145,7 +153,7 @@
                 if (team !== "---" && teamLogos[team]) {
                     logoEl.src = teamLogos[team];
                     logoEl.style.opacity = "1";
-                } else {
+                } else if (logoEl) {
                     logoEl.style.opacity = "0";
                 }
             };
@@ -158,13 +166,17 @@
             setNext('f_2', getWin('sf2', 3));
 
             const winner = getWin('f', 3);
-            document.getElementById('final-winner').innerText = winner;
+            const finalWinEl = document.getElementById('final-winner');
+            if (finalWinEl) finalWinEl.innerText = winner;
+            
             const winLogo = document.getElementById('winner-logo');
-            if (winner !== "---" && teamLogos[winner]) {
-                winLogo.src = teamLogos[winner];
-                winLogo.style.display = "block";
-            } else {
-                winLogo.style.display = "none";
+            if (winLogo) {
+                if (winner !== "---" && teamLogos[winner]) {
+                    winLogo.src = teamLogos[winner];
+                    winLogo.style.display = "block";
+                } else {
+                    winLogo.style.display = "none";
+                }
             }
         }
 
@@ -180,17 +192,17 @@
             };
 
             ['q1','q2','q3','q4','sf1','sf2','f'].forEach(k => {
-                const s1 = document.getElementById(`s_${k}_1`);
-                const s2 = document.getElementById(`s_${k}_2`);
-                let t1, t2;
+                const s1El = document.getElementById(`s_${k}_1`);
+                const s2El = document.getElementById(`s_${k}_2`);
+                let t1 = "---", t2 = "---";
                 if (k.startsWith('q')) {
-                    t1 = s1.previousElementSibling.querySelector('.team-name').innerText;
-                    t2 = s2.previousElementSibling.querySelector('.team-name').innerText;
+                    t1 = s1El.closest('.team-row').querySelector('.team-name').innerText;
+                    t2 = s2El.closest('.team-row').querySelector('.team-name').innerText;
                 } else {
                     t1 = document.getElementById(`t_${k}_1`).innerText;
                     t2 = document.getElementById(`t_${k}_2`).innerText;
                 }
-                payload.data[k] = { t1, t2, s1: s1.value || "0", s2: s2.value || "0" };
+                payload.data[k] = { t1, t2, s1: s1El.value || "0", s2: s2El.value || "0" };
             });
 
             try {
