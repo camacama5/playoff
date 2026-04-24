@@ -74,13 +74,16 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // מילון הלוגואים - תוודא שהשמות בגרשיים מתאימים בדיוק לשמות הקבצים שהעלית לתיקיית logos
+    // מילון הלוגואים - מעודכן בדיוק לפי 8 הקבוצות שציינת
     const teamLogos = {
-        "הפועל חיפה": "logos/logoshapoel_haifa.png",
         "מכבי רחובות": "logos/rehovot.png",
+        "עירוני נהריה": "logos/nahariya.png",
+        "הפועל חיפה": "logos/logoshapoel_haifa.png",
+        "מכבי אשדוד": "logos/ashdod.png",
+        "א.ס אליצור אשקלון": "logos/ashkelon.png",
         "אליצור שומרון": "logos/shomron.png",
-        "עירוני נהריה": "logos/nahariya.png"
-        // תוסיף כאן את שאר הקבוצות באותו פורמט
+        "עוטף דרום": "logos/otef_darom.png",
+        "א.ס רמת השרון": "logos/ramat_hasharon.png"
     };
 
     window.closeModal = () => {
