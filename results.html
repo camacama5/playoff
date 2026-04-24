@@ -18,7 +18,7 @@
         .modal-content { background-color: #fff; margin: 10% auto; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .close-btn { color: #aaa; float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close-btn:hover { color: #000; }
-        .prediction-item { background: #f8f9fa; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #eee; }
+        .prediction-item { background: #f8f9fa; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #eee; text-align: right; }
         .prediction-item strong { color: #1a73e8; }
     </style>
 </head>
@@ -52,16 +52,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-        // === הדבק את ה-firebaseConfig שלך כאן (בדיוק אותו אחד) ===
+        // המפתחות האמיתיים שלך הוכנסו כאן:
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM",
+            authDomain: "playoffhapoel.firebaseapp.com",
+            projectId: "playoffhapoel",
+            storageBucket: "playoffhapoel.firebasestorage.app",
+            messagingSenderId: "263243431887",
+            appId: "1:263243431887:web:2515ff99c8962a4cbf5cba"
         };
-        // =========================================
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -75,11 +74,10 @@
         async function loadData() {
             const tbody = document.getElementById("tableBody");
             try {
-                // משיכת נתונים מסודרים לפי תאריך
                 const q = query(collection(db, "brackets"), orderBy("submittedAt", "desc"));
                 const querySnapshot = await getDocs(q);
                 
-                tbody.innerHTML = ""; // ניקוי טקסט הטעינה
+                tbody.innerHTML = ""; 
 
                 if(querySnapshot.empty) {
                     tbody.innerHTML = "<tr><td colspan='2' style='text-align: center;'>עדיין אין נרשמים.</td></tr>";
@@ -90,15 +88,11 @@
                     const data = doc.data();
                     const tr = document.createElement("tr");
                     
-                    // המרת התאריך של פיירבייס לתאריך קריא
                     const dateObj = data.submittedAt.toDate();
                     const formattedDate = dateObj.toLocaleDateString('he-IL') + " " + dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
 
                     tr.innerHTML = `<td>${data.userName}</td><td>${formattedDate}</td>`;
-                    
-                    // אירוע לחיצה על השורה יפתח את הבראקט של אותו אדם
                     tr.addEventListener("click", () => showBracket(data));
-                    
                     tbody.appendChild(tr);
                 });
             } catch (error) {
@@ -111,21 +105,21 @@
             document.getElementById("modalTitle").innerText = "הבראקט של " + data.userName;
             
             const p = data.predictions;
+            // בדיקה אם הנתונים קיימים כדי למנוע שגיאות
             const detailsHtml = `
-                <div class="prediction-item"><strong>רבע גמר 1 (רחובות - רמת השרון):</strong> ${p.qf1}</div>
-                <div class="prediction-item"><strong>רבע גמר 2 (נהריה - עוטף דרום):</strong> ${p.qf2}</div>
-                <div class="prediction-item"><strong>רבע גמר 3 (חיפה - שומרון):</strong> ${p.qf3}</div>
-                <div class="prediction-item"><strong>רבע גמר 4 (אשדוד - אשקלון):</strong> ${p.qf4}</div>
-                <div class="prediction-item"><strong>חצי גמר 1:</strong> ${p.sf1}</div>
-                <div class="prediction-item"><strong>חצי גמר 2:</strong> ${p.sf2}</div>
-                <div class="prediction-item"><strong>הגמר:</strong> ${p.final}</div>
+                <div class="prediction-item"><strong>רבע גמר 1:</strong> ${p.qf1 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>רבע גמר 2:</strong> ${p.qf2 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>רבע גמר 3:</strong> ${p.qf3 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>רבע גמר 4:</strong> ${p.qf4 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>חצי גמר 1:</strong> ${p.sf1 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>חצי גמר 2:</strong> ${p.sf2 || 'אין נתון'}</div>
+                <div class="prediction-item"><strong>הגמר:</strong> ${p.final || 'אין נתון'}</div>
             `;
             
             document.getElementById("modalDetails").innerHTML = detailsHtml;
             modal.style.display = "block";
         }
 
-        // הפעלת הפונקציה בטעינת הדף
         loadData();
     </script>
 </body>
