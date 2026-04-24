@@ -63,14 +63,15 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-    const firebaseConfig = { 
-        apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", 
-        authDomain: "playoffhapoel.firebaseapp.com", 
-        projectId: "playoffhapoel", 
-        storageBucket: "playoffhapoel.firebasestorage.app", 
-        messagingSenderId: "263243431887", 
-        appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" 
-    };
+   const firebaseConfig = {
+  apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM",
+  authDomain: "playoffhapoel.firebaseapp.com",
+  projectId: "playoffhapoel",
+  storageBucket: "playoffhapoel.firebasestorage.app",
+  messagingSenderId: "263243431887",
+  appId: "1:263243431887:web:2515ff99c8962a4cbf5cba",
+  measurementId: "G-NEV8LBNT8S"
+};
     
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
