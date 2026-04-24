@@ -6,16 +6,16 @@
     <title>תחזית פלייאוף - הליגה הלאומית</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; text-align: center; }
-        .bracket-container { display: flex; justify-content: space-between; gap: 20px; max-width: 1100px; margin: 20px auto; overflow-x: auto; }
-        .column { flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: space-around; gap: 15px; }
-        .matchup { background: white; border-radius: 8px; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
-        .team-row { display: flex; justify-content: space-between; align-items: center; margin: 5px 0; }
-        .team-name { font-weight: bold; width: 120px; text-align: right; }
-        input[type="number"] { width: 40px; padding: 3px; text-align: center; border-radius: 4px; border: 1px solid #ccc; }
-        .submit-section { margin: 30px auto; max-width: 300px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        button { background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
-        button:disabled { background: #ccc; }
-        .winner-label { color: #1a73e8; font-size: 12px; display: block; margin-bottom: 5px; }
+        .bracket-container { display: flex; justify-content: space-between; gap: 20px; max-width: 1200px; margin: 0 auto; overflow-x: auto; }
+        .column { flex: 1; min-width: 280px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+        .matchup { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .matchup h3 { margin: 0 0 10px 0; font-size: 14px; color: #555; background: #f8f9fa; padding: 5px; border-radius: 4px; }
+        .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .team-name { font-weight: bold; font-size: 14px; text-align: right; width: 180px; }
+        input[type="number"] { width: 45px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; }
+        .submit-section { max-width: 400px; margin: 40px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { background-color: #1a73e8; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; }
+        button:disabled { background-color: #ccc; }
     </style>
 </head>
 <body>
@@ -25,52 +25,52 @@
     <div class="bracket-container">
         <div class="column">
             <div class="matchup">
-                <span class="winner-label">רבע 1</span>
-                <div class="team-row"><span id="q1_t1_name" class="team-name">מכבי רחובות</span><input type="number" id="q1_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="q1_t2_name" class="team-name">רמת השרון</span><input type="number" id="q1_s2" oninput="updateBracket()" value="0"></div>
+                <h3>משחק 1 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q1_1" class="team-name">מקום 2: מכבי רחובות</span><input type="number" id="s_q1_1" min="0" max="2" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q1_2" class="team-name">מקום 9: א.ס רמת השרון</span><input type="number" id="s_q1_2" min="0" max="2" value="0" oninput="upd()"></div>
             </div>
             <div class="matchup">
-                <span class="winner-label">רבע 4</span>
-                <div class="team-row"><span id="q4_t1_name" class="team-name">מכבי אשדוד</span><input type="number" id="q4_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="q4_t2_name" class="team-name">אשקלון</span><input type="number" id="q4_s2" oninput="updateBracket()" value="0"></div>
+                <h3>משחק 4 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q4_1" class="team-name">מקום 5: מכבי אשדוד</span><input type="number" id="s_q4_1" min="0" max="2" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q4_2" class="team-name">מקום 6: א.ס אליצור אשקלון</span><input type="number" id="s_q4_2" min="0" max="2" value="0" oninput="upd()"></div>
             </div>
             <div class="matchup">
-                <span class="winner-label">רבע 2</span>
-                <div class="team-row"><span id="q2_t1_name" class="team-name">עירוני נהריה</span><input type="number" id="q2_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="q2_t2_name" class="team-name">עוטף דרום</span><input type="number" id="q2_s2" oninput="updateBracket()" value="0"></div>
+                <h3>משחק 2 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q2_1" class="team-name">מקום 3: עירוני נהריה</span><input type="number" id="s_q2_1" min="0" max="2" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q2_2" class="team-name">מקום 8: עוטף דרום</span><input type="number" id="s_q2_2" min="0" max="2" value="0" oninput="upd()"></div>
             </div>
             <div class="matchup">
-                <span class="winner-label">רבע 3</span>
-                <div class="team-row"><span id="q3_t1_name" class="team-name">הפועל חיפה</span><input type="number" id="q3_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="q3_t2_name" class="team-name">אליצור שומרון</span><input type="number" id="q3_s2" oninput="updateBracket()" value="0"></div>
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="matchup">
-                <span class="winner-label">חצי גמר 1</span>
-                <div class="team-row"><span id="sf1_t1_name" class="team-name">---</span><input type="number" id="sf1_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="sf1_t2_name" class="team-name">---</span><input type="number" id="sf1_s2" oninput="updateBracket()" value="0"></div>
-            </div>
-            <div class="matchup">
-                <span class="winner-label">חצי גמר 2</span>
-                <div class="team-row"><span id="sf2_t1_name" class="team-name">---</span><input type="number" id="sf2_s1" oninput="updateBracket()" value="0"></div>
-                <div class="team-row"><span id="sf2_t2_name" class="team-name">---</span><input type="number" id="sf2_s2" oninput="updateBracket()" value="0"></div>
+                <h3>משחק 3 (הטוב מ-3)</h3>
+                <div class="team-row"><span id="t_q3_1" class="team-name">מקום 4: הפועל חיפה</span><input type="number" id="s_q3_1" min="0" max="2" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_q3_2" class="team-name">מקום 7: אליצור שומרון</span><input type="number" id="s_q3_2" min="0" max="2" value="0" oninput="upd()"></div>
             </div>
         </div>
 
         <div class="column">
             <div class="matchup">
-                <span class="winner-label">הגמר הגדול</span>
-                <div class="team-row"><span id="f_t1_name" class="team-name">---</span><input type="number" id="f_s1" value="0"></div>
-                <div class="team-row"><span id="f_t2_name" class="team-name">---</span><input type="number" id="f_s2" value="0"></div>
+                <h3>חצי גמר 1 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf1_1" class="team-name">מנצחת משחק 1</span><input type="number" id="s_sf1_1" min="0" max="3" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_sf1_2" class="team-name">מנצחת משחק 4</span><input type="number" id="s_sf1_2" min="0" max="3" value="0" oninput="upd()"></div>
+            </div>
+            <div class="matchup">
+                <h3>חצי גמר 2 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf2_1" class="team-name">מנצחת משחק 2</span><input type="number" id="s_sf2_1" min="0" max="3" value="0" oninput="upd()"></div>
+                <div class="team-row"><span id="t_sf2_2" class="team-name">מנצחת משחק 3</span><input type="number" id="s_sf2_2" min="0" max="3" value="0" oninput="upd()"></div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="matchup">
+                <h3>סדרת הגמר (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_f_1" class="team-name">פיינליסטית א'</span><input type="number" id="s_f_1" min="0" max="3" value="0"></div>
+                <div class="team-row"><span id="t_f_2" class="team-name">פיינליסטית ב'</span><input type="number" id="s_f_2" min="0" max="3" value="0"></div>
             </div>
         </div>
     </div>
 
     <div class="submit-section">
-        <input type="text" id="pName" placeholder="השם שלך" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;">
-        <button id="sendBtn">שלח תחזית</button>
+        <input type="text" id="pName" placeholder="השם שלך" style="width: 90%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <button id="sendBtn">שלח תחזית פלייאוף</button>
     </div>
 
     <script type="module">
@@ -89,54 +89,43 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // פונקציה לעדכון אוטומטי של שמות המנצחות
-        window.updateBracket = function() {
-            const getWinner = (m, t1, t2) => {
-                const s1 = parseInt(document.getElementById(m+'_s1').value);
-                const s2 = parseInt(document.getElementById(m+'_s2').value);
-                if (s1 > s2) return document.getElementById(t1).innerText;
-                if (s2 > s1) return document.getElementById(t2).innerText;
+        window.upd = function() {
+            const win = (m, i1, i2) => {
+                const s1 = parseInt(document.getElementById('s_'+m+'_1').value) || 0;
+                const s2 = parseInt(document.getElementById('s_'+m+'_2').value) || 0;
+                if (s1 > s2) return document.getElementById(i1).innerText;
+                if (s2 > s1) return document.getElementById(i2).innerText;
                 return "---";
             };
-
-            document.getElementById('sf1_t1_name').innerText = getWinner('q1', 'q1_t1_name', 'q1_t2_name');
-            document.getElementById('sf1_t2_name').innerText = getWinner('q4', 'q4_t1_name', 'q4_t2_name');
-            document.getElementById('sf2_t1_name').innerText = getWinner('q2', 'q2_t1_name', 'q2_t2_name');
-            document.getElementById('sf2_t2_name').innerText = getWinner('q3', 'q3_t1_name', 'q3_t2_name');
-            
-            document.getElementById('f_t1_name').innerText = getWinner('sf1', 'sf1_t1_name', 'sf1_t2_name');
-            document.getElementById('f_t2_name').innerText = getWinner('sf2', 'sf2_t1_name', 'sf2_t2_name');
-        }
+            document.getElementById('t_sf1_1').innerText = win('q1', 't_q1_1', 't_q1_2');
+            document.getElementById('t_sf1_2').innerText = win('q4', 't_q4_1', 't_q4_2');
+            document.getElementById('t_sf2_1').innerText = win('q2', 't_q2_1', 't_q2_2');
+            document.getElementById('t_sf2_2').innerText = win('q3', 't_q3_1', 't_q3_2');
+            document.getElementById('t_f_1').innerText = win('sf1', 't_sf1_1', 't_sf1_2');
+            document.getElementById('t_f_2').innerText = win('sf2', 't_sf2_1', 't_sf2_2');
+        };
 
         document.getElementById('sendBtn').onclick = async () => {
             const name = document.getElementById('pName').value;
             if(!name) return alert("אנא הזן שם");
-            
             const btn = document.getElementById('sendBtn');
             btn.disabled = true;
-            btn.innerText = "שולח...";
 
-            try {
-                await addDoc(collection(db, "brackets"), {
-                    userName: name,
-                    submittedAt: new Date(),
-                    predictions: {
-                        qf1: document.getElementById('q1_s1').value + "-" + document.getElementById('q1_s2').value,
-                        qf2: document.getElementById('q2_s1').value + "-" + document.getElementById('q2_s2').value,
-                        qf3: document.getElementById('q3_s1').value + "-" + document.getElementById('q3_s2').value,
-                        qf4: document.getElementById('q4_s1').value + "-" + document.getElementById('q4_s2').value,
-                        sf1: document.getElementById('sf1_s1').value + "-" + document.getElementById('sf1_s2').value,
-                        sf2: document.getElementById('sf2_s1').value + "-" + document.getElementById('sf2_s2').value,
-                        final: document.getElementById('f_s1').value + "-" + document.getElementById('f_s2').value
-                    }
-                });
-                alert("נשמר בהצלחה!");
-                window.location.href = 'results.html';
-            } catch (e) {
-                alert("שגיאה! וודא שחוקי Firebase פתוחים. " + e.message);
-                btn.disabled = false;
-                btn.innerText = "שלח תחזית";
-            }
+            const results = {
+                userName: name,
+                date: new Date(),
+                data: {
+                    m1: { t: document.getElementById('t_q1_1').innerText + " - " + document.getElementById('t_q1_2').innerText, s: document.getElementById('s_q1_1').value + "-" + document.getElementById('s_q1_2').value },
+                    m4: { t: document.getElementById('t_q4_1').innerText + " - " + document.getElementById('t_q4_2').innerText, s: document.getElementById('s_q4_1').value + "-" + document.getElementById('s_q4_2').value },
+                    m2: { t: document.getElementById('t_q2_1').innerText + " - " + document.getElementById('t_q2_2').innerText, s: document.getElementById('s_q2_1').value + "-" + document.getElementById('s_q2_2').value },
+                    m3: { t: document.getElementById('t_q3_1').innerText + " - " + document.getElementById('t_q3_2').innerText, s: document.getElementById('s_q3_1').value + "-" + document.getElementById('s_q3_2').value },
+                    sf1: { t: document.getElementById('t_sf1_1').innerText + " - " + document.getElementById('t_sf1_2').innerText, s: document.getElementById('s_sf1_1').value + "-" + document.getElementById('s_sf1_2').value },
+                    sf2: { t: document.getElementById('t_sf2_1').innerText + " - " + document.getElementById('t_sf2_2').innerText, s: document.getElementById('s_sf2_1').value + "-" + document.getElementById('s_sf2_2').value },
+                    f: { t: document.getElementById('t_f_1').innerText + " - " + document.getElementById('t_f_2').innerText, s: document.getElementById('s_f_1').value + "-" + document.getElementById('s_f_2').value }
+                }
+            };
+            await addDoc(collection(db, "brackets"), results);
+            window.location.href = 'results.html';
         };
     </script>
 </body>
