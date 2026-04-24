@@ -8,30 +8,32 @@
     <style>
         :root { --blue: #06274c; --red: #cc0000; }
         body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #06274c 0%, #cc0000 100%); background-attachment: fixed; margin: 0; padding: 10px; text-align: center; color: white; }
-        h1 { font-family: 'Karantina', cursive; margin-top: 50px; font-size: 45px; }
+        h1 { font-family: 'Karantina', cursive; margin-top: 50px; font-size: 45px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
-        .bracket-container { display: flex; justify-content: center; align-items: center; gap: 10px; max-width: 1400px; margin: 0 auto; }
-        .column { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 10px; min-height: 550px; }
+        .bracket-container { display: flex; justify-content: center; align-items: center; gap: 15px; max-width: 1400px; margin: 0 auto; }
+        .column { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 15px; min-height: 600px; }
         
-        /* תיבות גדולות יותר */
-        .matchup { background: white; border-radius: 6px; border-right: 5px solid var(--blue); width: 230px; color: #333; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .matchup h3 { margin: 0; font-size: 12px; color: white; background: var(--blue); padding: 5px; font-family: 'Karantina'; }
+        /* תיבות רחבות וברורות */
+        .matchup { background: white; border-radius: 6px; border-right: 6px solid var(--blue); width: 240px; color: #333; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .matchup h3 { margin: 0; font-size: 13px; color: white; background: var(--blue); padding: 6px; font-family: 'Karantina'; letter-spacing: 1px; }
         
-        .team-row { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee; }
-        .team-info { display: flex; align-items: center; gap: 8px; }
-        .team-logo { width: 25px; height: 25px; object-fit: contain; }
-        .team-name { font-weight: bold; font-size: 14px; }
+        .team-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .team-info { display: flex; align-items: center; gap: 10px; }
+        .team-logo { width: 28px; height: 28px; object-fit: contain; }
+        .team-name { font-weight: bold; font-size: 15px; }
         
-        input { width: 40px; padding: 3px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 18px; }
+        input { width: 45px; padding: 4px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 18px; color: var(--blue); }
 
-        .final-winner-box { background: white; padding: 10px; border-radius: 8px; border: 3px solid var(--red); color: #333; margin-bottom: 10px; }
-        #final-winner { font-family: 'Karantina'; font-size: 30px; font-weight: bold; color: var(--red); }
+        .final-winner-box { background: white; padding: 15px; border-radius: 10px; border: 4px solid var(--red); color: #333; margin-bottom: 15px; }
+        .final-winner-box div { font-weight: bold; font-size: 16px; color: var(--blue); margin-bottom: 5px; }
+        #final-winner { font-family: 'Karantina'; font-size: 36px; font-weight: bold; color: var(--red); line-height: 1; }
 
-        .submit-section { max-width: 350px; margin: 30px auto; background: white; padding: 15px; border-radius: 8px; color: #333; }
-        #pName { width: 90%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; }
-        button { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-family: 'Karantina'; font-size: 24px; }
+        .submit-section { max-width: 380px; margin: 40px auto; background: white; padding: 20px; border-radius: 10px; color: #333; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        #pName { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        button { background: var(--blue); color: white; border: none; padding: 14px; width: 100%; cursor: pointer; font-family: 'Karantina'; font-size: 26px; border-radius: 5px; transition: 0.3s; }
+        button:hover { background: #083a75; transform: translateY(-2px); }
 
-        @media (max-width: 950px) { .bracket-container { flex-direction: column; } .matchup { width: 90%; } }
+        @media (max-width: 950px) { .bracket-container { flex-direction: column; } .matchup { width: 280px; } }
     </style>
 </head>
 <body>
@@ -55,7 +57,7 @@
 
         <div class="column">
             <div class="final-winner-box">
-                <div style="font-weight:bold; font-size:14px;">הזוכה:</div>
+                <div>הזוכה:</div>
                 <span id="final-winner">---</span>
             </div>
             <div class="matchup" style="border-right-color: var(--red);"><h3>סדרת הגמר</h3>
@@ -88,61 +90,70 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", authDomain: "playoffhapoel.firebaseapp.com", projectId: "playoffhapoel", storageBucket: "playoffhapoel.firebasestorage.app", messagingSenderId: "263243431887", appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" };
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", 
+            authDomain: "playoffhapoel.firebaseapp.com", 
+            projectId: "playoffhapoel", 
+            storageBucket: "playoffhapoel.firebasestorage.app", 
+            messagingSenderId: "263243431887", 
+            appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" 
+        };
         const db = getFirestore(initializeApp(firebaseConfig));
 
-        const teamLogos = { "מכבי רחובות": "logos/rehovot.png", "עירוני נהריה": "logos/nahariya.png", "הפועל חיפה": "logos/logoshapoel_haifa.png", "מכבי אשדוד": "logos/ashdod.png", "א.ס אליצור אשקלון": "logos/ashkelon.png", "אליצור שומרון": "logos/shomron.png", "עוטף דרום": "logos/otef_darom.png", "א.ס רמת השרון": "logos/ramat_hasharon.png" };
+        const teamLogos = {
+            "מכבי רחובות": "logos/rehovot.png", "עירוני נהריה": "logos/nahariya.png",
+            "הפועל חיפה": "logos/logoshapoel_haifa.png", "מכבי אשדוד": "logos/ashdod.png",
+            "א.ס אליצור אשקלון": "logos/ashkelon.png", "אליצור שומרון": "logos/shomron.png",
+            "עוטף דרום": "logos/otef_darom.png", "א.ס רמת השרון": "logos/ramat_hasharon.png"
+        };
 
         window.upd = function() {
-            const getWinner = (m, target) => {
+            const getWin = (m, target) => {
                 const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
                 const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
-                let names = [];
-                if(m.startsWith('q')) {
-                    const rows = document.getElementById(`s_${m}_1`).closest('.matchup').querySelectorAll('.team-name');
-                    names = [rows[0].innerText, rows[1].innerText];
+                let t1, t2;
+                if (m.startsWith('q')) {
+                    const matchup = document.getElementById(`s_${m}_1`).closest('.matchup');
+                    const names = matchup.querySelectorAll('.team-name');
+                    t1 = names[0].innerText; t2 = names[1].innerText;
                 } else {
-                    names = [document.getElementById(`t_${m}_1`).innerText, document.getElementById(`t_${m}_2`).innerText];
+                    t1 = document.getElementById(`t_${m}_1`).innerText;
+                    t2 = document.getElementById(`t_${m}_2`).innerText;
                 }
-                if(s1 === target) return names[0];
-                if(s2 === target) return names[1];
+                if (s1 === target) return t1;
+                if (s2 === target) return t2;
                 return "---";
             };
 
-            const setNext = (id, team) => {
+            const setN = (id, team) => {
                 document.getElementById(`t_${id}`).innerText = team;
                 const img = document.getElementById(`l_${id}`);
-                if(team !== "---") { img.src = teamLogos[team]; img.style.opacity = "1"; }
+                if (team !== "---" && teamLogos[team]) { img.src = teamLogos[team]; img.style.opacity = "1"; }
                 else { img.style.opacity = "0"; }
             };
 
-            setNext('sf1_1', getWinner('q1', 2));
-            setNext('sf1_2', getWinner('q4', 2));
-            setNext('sf2_1', getWinner('q2', 2));
-            setNext('sf2_2', getWinner('q3', 2));
-            setNext('f_1', getWinner('sf1', 3));
-            setNext('f_2', getWinner('sf2', 3));
-
-            document.getElementById('final-winner').innerText = getWinner('f', 3);
+            setN('sf1_1', getWin('q1', 2)); setN('sf1_2', getWin('q4', 2));
+            setN('sf2_1', getWin('q2', 2)); setN('sf2_2', getWin('q3', 2));
+            setN('f_1', getWin('sf1', 3)); setN('f_2', getWin('sf2', 3));
+            document.getElementById('final-winner').innerText = getWin('f', 3);
         };
 
         document.getElementById('sendBtn').onclick = async () => {
-            const name = document.getElementById('pName').value;
-            if(!name) return alert("הכנס שם");
+            const name = document.getElementById('pName').value.trim();
             const winner = document.getElementById('final-winner').innerText;
-            if(winner === "---") return alert("אנא מלא את כל התוצאות עד למנצחת");
-            
+            if (!name || winner === "---") return alert("אנא מלא שם ותחזית מלאה");
+
             const results = {};
             ['q1','q2','q3','q4','sf1','sf2','f'].forEach(k => {
                 results[k] = { 
-                    s1: document.getElementById(`s_${k}_1`).value, 
-                    s2: document.getElementById(`s_${k}_2`).value 
+                    s1: document.getElementById(`s_${k}_1`).value || "0", 
+                    s2: document.getElementById(`s_${k}_2`).value || "0" 
                 };
             });
 
             try {
                 await addDoc(collection(db, "brackets"), { userName: name, winner, results, date: new Date() });
-                window.location.href = 'results.html';
+                window.location.href = "results.html";
             } catch(e) { alert("שגיאה בשמירה"); }
         };
     </script>
