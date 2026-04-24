@@ -3,139 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>תחזית הפלייאוף</title>
+    <title>תחזית הפלייאוף - ליגה לאומית</title>
     <style>
         :root { --blue: #06274c; --red: #cc0000; --bg: #e8ebf0; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; text-align: center; }
-        h1 { color: var(--blue); margin: 20px 0; }
+        h1 { color: var(--blue); margin: 20px 0; font-size: 28px; }
         .bracket-container { display: flex; justify-content: center; align-items: center; gap: 15px; max-width: 1300px; margin: 20px auto; overflow-x: auto; }
         .column { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 20px; height: 600px; }
         .matchup { background: white; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-right: 4px solid var(--blue); overflow: hidden; width: 220px; }
         .matchup h3 { margin: 0; font-size: 11px; color: white; background: var(--blue); padding: 5px; }
         .team-row { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee; }
-        .team-name { font-weight: bold; font-size: 13px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        input { width: 45px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 16px; }
-        .final-winner-box { background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--red); margin-bottom: 20px; }
+        .team-name { font-weight: bold; font-size: 13px; color: #333; }
+        input { width: 45px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 18px; color: var(--blue); }
+        /* ביטול חיצי ה-0 המיותרים בדפדפנים */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .final-winner-box { background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--red); margin-bottom: 20px; box-shadow: 0 4px 10px rgba(204,0,0,0.2); }
         #final-winner { font-size: 22px; font-weight: bold; color: var(--red); display: block; margin-top: 5px; }
-        .submit-section { max-width: 400px; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        #pName { width: 85%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; }
+        .submit-section { max-width: 400px; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; border-top: 4px solid var(--red); }
+        #pName { width: 85%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        button { background: var(--blue); color: white; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; transition: 0.2s; }
         button:hover { background: var(--red); }
     </style>
 </head>
 <body>
-    <h1>תחזית הפלייאוף</h1>
+    <h1>תחזית הפלייאוף של קהילת אוהדי הפועל</h1>
     
     <div class="bracket-container">
         <div class="column">
-            <div class="matchup"><h3>רבע 1 (הטוב מ-3)</h3>
-                <div class="team-row"><span>מכבי רחובות</span><input type="number" id="s_q1_1" min="0" max="2" oninput="validateScore(this, 2, 's_q1_2')"></div>
-                <div class="team-row"><span>א.ס רמת השרון</span><input type="number" id="s_q1_2" min="0" max="2" oninput="validateScore(this, 2, 's_q1_1')"></div></div>
-            <div class="matchup"><h3>רבע 4 (הטוב מ-3)</h3>
-                <div class="team-row"><span>מכבי אשדוד</span><input type="number" id="s_q4_1" min="0" max="2" oninput="validateScore(this, 2, 's_q4_2')"></div>
-                <div class="team-row"><span>א.ס אליצור אשקלון</span><input type="number" id="s_q4_2" min="0" max="2" oninput="validateScore(this, 2, 's_q4_1')"></div></div>
+            <div class="matchup"><h3>משחק 1 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">מכבי רחובות</span><input type="number" id="s_q1_1" min="0" max="2" oninput="handleInput(this, 2, 's_q1_2')"></div>
+                <div class="team-row"><span class="team-name">א.ס רמת השרון</span><input type="number" id="s_q1_2" min="0" max="2" oninput="handleInput(this, 2, 's_q1_1')"></div></div>
+            <div class="matchup"><h3>משחק 4 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">מכבי אשדוד</span><input type="number" id="s_q4_1" min="0" max="2" oninput="handleInput(this, 2, 's_q4_2')"></div>
+                <div class="team-row"><span class="team-name">א.ס אליצור אשקלון</span><input type="number" id="s_q4_2" min="0" max="2" oninput="handleInput(this, 2, 's_q4_1')"></div></div>
         </div>
 
         <div class="column">
-            <div class="matchup"><h3>חצי 1 (הטוב מ-5)</h3>
-                <div class="team-row"><span id="t_sf1_1">---</span><input type="number" id="s_sf1_1" min="0" max="3" oninput="validateScore(this, 3, 's_sf1_2')"></div>
-                <div class="team-row"><span id="t_sf1_2">---</span><input type="number" id="s_sf1_2" min="0" max="3" oninput="validateScore(this, 3, 's_sf1_1')"></div></div>
+            <div class="matchup"><h3>חצי גמר 1 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf1_1" class="team-name">---</span><input type="number" id="s_sf1_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_2')"></div>
+                <div class="team-row"><span id="t_sf1_2" class="team-name">---</span><input type="number" id="s_sf1_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_1')"></div></div>
         </div>
 
         <div class="column">
-            <div class="final-winner-box">הזוכה: <span id="final-winner">---</span></div>
-            <div class="matchup" style="border-right-color: var(--red);"><h3>הגמר (הטוב מ-5)</h3>
-                <div class="team-row"><span id="t_f_1">---</span><input type="number" id="s_f_1" min="0" max="3" oninput="validateScore(this, 3, 's_f_2')"></div>
-                <div class="team-row"><span id="t_f_2">---</span><input type="number" id="s_f_2" min="0" max="3" oninput="validateScore(this, 3, 's_f_1')"></div></div>
+            <div class="final-winner-box">הזוכה הגדולה: <span id="final-winner">---</span></div>
+            <div class="matchup" style="border-right-color: var(--red);"><h3>סדרת הגמר (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_f_1" class="team-name">---</span><input type="number" id="s_f_1" min="0" max="3" oninput="handleInput(this, 3, 's_f_2')"></div>
+                <div class="team-row"><span id="t_f_2" class="team-name">---</span><input type="number" id="s_f_2" min="0" max="3" oninput="handleInput(this, 3, 's_f_1')"></div></div>
         </div>
 
         <div class="column">
-            <div class="matchup"><h3>חצי 2 (הטוב מ-5)</h3>
-                <div class="team-row"><span id="t_sf2_1">---</span><input type="number" id="s_sf2_1" min="0" max="3" oninput="validateScore(this, 3, 's_sf2_2')"></div>
-                <div class="team-row"><span id="t_sf2_2">---</span><input type="number" id="s_sf2_2" min="0" max="3" oninput="validateScore(this, 3, 's_sf2_1')"></div></div>
+            <div class="matchup"><h3>חצי גמר 2 (הטוב מ-5)</h3>
+                <div class="team-row"><span id="t_sf2_1" class="team-name">---</span><input type="number" id="s_sf2_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_2')"></div>
+                <div class="team-row"><span id="t_sf2_2" class="team-name">---</span><input type="number" id="s_sf2_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_1')"></div></div>
         </div>
 
         <div class="column">
-            <div class="matchup"><h3>רבע 2 (הטוב מ-3)</h3>
-                <div class="team-row"><span>עירוני נהריה</span><input type="number" id="s_q2_1" min="0" max="2" oninput="validateScore(this, 2, 's_q2_2')"></div>
-                <div class="team-row"><span>עוטף דרום</span><input type="number" id="s_q2_2" min="0" max="2" oninput="validateScore(this, 2, 's_q2_1')"></div></div>
-            <div class="matchup"><h3>רבע 3 (הטוב מ-3)</h3>
-                <div class="team-row"><span>הפועל חיפה</span><input type="number" id="s_q3_1" min="0" max="2" oninput="validateScore(this, 2, 's_q3_2')"></div>
-                <div class="team-row"><span>אליצור שומרון</span><input type="number" id="s_q3_2" min="0" max="2" oninput="validateScore(this, 2, 's_q3_1')"></div></div>
+            <div class="matchup"><h3>משחק 2 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">עירוני נהריה</span><input type="number" id="s_q2_1" min="0" max="2" oninput="handleInput(this, 2, 's_q2_2')"></div>
+                <div class="team-row"><span class="team-name">עוטף דרום</span><input type="number" id="s_q2_2" min="0" max="2" oninput="handleInput(this, 2, 's_q2_1')"></div></div>
+            <div class="matchup"><h3>משחק 3 (הטוב מ-3)</h3>
+                <div class="team-row"><span class="team-name">הפועל חיפה</span><input type="number" id="s_q3_1" min="0" max="2" oninput="handleInput(this, 2, 's_q3_2')"></div>
+                <div class="team-row"><span class="team-name">אליצור שומרון</span><input type="number" id="s_q3_2" min="0" max="2" oninput="handleInput(this, 2, 's_q3_1')"></div></div>
         </div>
     </div>
 
     <div class="submit-section">
         <input type="text" id="pName" placeholder="השם שלך">
-        <button id="sendBtn">שמור תחזית</button>
+        <button id="sendBtn">שלח תחזית</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", authDomain: "playoffhapoel.firebaseapp.com", projectId: "playoffhapoel", storageBucket: "playoffhapoel.firebasestorage.app", messagingSenderId: "263243431887", appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" };
+        // הגדרות Firebase
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", 
+            authDomain: "playoffhapoel.firebaseapp.com", 
+            projectId: "playoffhapoel", 
+            storageBucket: "playoffhapoel.firebasestorage.app", 
+            messagingSenderId: "263243431887", 
+            appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" 
+        };
         const db = getFirestore(initializeApp(firebaseConfig));
 
-        window.validateScore = function(el, target, otherId) {
+        // פונקציית טיפול בהזנת תוצאה
+        window.handleInput = function(el, target, otherId) {
             let val = parseInt(el.value);
+            // הגבלת המספר המוקלד
             if (val > target) el.value = target;
             if (val < 0) el.value = 0;
             
             const other = document.getElementById(otherId);
-            if (parseInt(el.value) === target && parseInt(other.value) === target) {
+            const otherVal = parseInt(other.value) || 0;
+
+            // החלפה אוטומטית למניעת תיקו בסיום הסדרה
+            if (parseInt(el.value) === target && otherVal === target) {
                 other.value = target - 1;
             }
-            updateBracket();
+            upd(); // עדכון הבראקט
         };
 
-        function updateBracket() {
-            const getW = (m, target) => {
+        // פונקציה לעדכון שמות המנצחות שעוברות שלב
+        function upd() {
+            const getWin = (m, target) => {
                 const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
                 const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
-                const t1 = m.startsWith('q') ? document.querySelectorAll(`#s_${m}_1`)[0].previousElementSibling.innerText : document.getElementById(`t_${m}_1`).innerText;
-                const t2 = m.startsWith('q') ? document.querySelectorAll(`#s_${m}_2`)[0].previousElementSibling.innerText : document.getElementById(`t_${m}_2`).innerText;
                 
+                // שליפת שמות הקבוצות (מטפל גם בשלבים המוקדמים וגם בשלבים המתקדמים)
+                const row1 = document.getElementById(`s_${m}_1`);
+                const row2 = document.getElementById(`s_${m}_2`);
+                const t1 = m.startsWith('q') ? row1.previousElementSibling.innerText : document.getElementById(`t_${m}_1`).innerText;
+                const t2 = m.startsWith('q') ? row2.previousElementSibling.innerText : document.getElementById(`t_${m}_2`).innerText;
+
+                // רק אם קבוצה הגיעה למספר הניצחונות הנדרש היא עוברת
                 if (s1 === target) return t1;
                 if (s2 === target) return t2;
                 return "---";
             };
 
-            document.getElementById('t_sf1_1').innerText = getW('q1', 2);
-            document.getElementById('t_sf1_2').innerText = getW('q4', 2);
-            document.getElementById('t_sf2_1').innerText = getW('q2', 2);
-            document.getElementById('t_sf2_2').innerText = getW('q3', 2);
+            // עדכון חצי הגמר (צריך 2 ניצחונות ברבע)
+            document.getElementById('t_sf1_1').innerText = getWin('q1', 2);
+            document.getElementById('t_sf1_2').innerText = getWin('q4', 2);
+            document.getElementById('t_sf2_1').innerText = getWin('q2', 2);
+            document.getElementById('t_sf2_2').innerText = getWin('q3', 2);
             
-            document.getElementById('t_f_1').innerText = getW('sf1', 3);
-            document.getElementById('t_f_2').innerText = getW('sf2', 3);
-            document.getElementById('final-winner').innerText = getW('f', 3);
+            // עדכון הגמר (צריך 3 ניצחונות בחצי)
+            document.getElementById('t_f_1').innerText = getWin('sf1', 3);
+            document.getElementById('t_f_2').innerText = getWin('sf2', 3);
+            
+            // עדכון הזוכה (צריך 3 ניצחונות בגמר)
+            document.getElementById('final-winner').innerText = getWin('f', 3);
         }
 
+        // שליחה ל-Firebase
         document.getElementById('sendBtn').onclick = async () => {
-            const name = document.getElementById('pName').value;
-            if(!name) return alert("אנא הזן שם");
+            const n = document.getElementById('pName').value;
+            if(!n) return alert("אנא הזן שם לפני השליחה");
             
-            const results = {};
+            const payload = { 
+                userName: n, 
+                winner: document.getElementById('final-winner').innerText, 
+                date: new Date(), 
+                data: {} // שמירה תחת 'data' כדי ש-results.html יזהה
+            };
+
             ['q1','q2','q3','q4','sf1','sf2','f'].forEach(k => {
-                const row1 = document.getElementById(`s_${k}_1`);
-                const row2 = document.getElementById(`s_${k}_2`);
-                results[k] = {
-                    t1: k.startsWith('q') ? row1.previousElementSibling.innerText : document.getElementById(`t_${k}_1`).innerText,
-                    t2: k.startsWith('q') ? row2.previousElementSibling.innerText : document.getElementById(`t_${k}_2`).innerText,
-                    s1: row1.value || "0",
-                    s2: row2.value || "0"
+                const s1 = document.getElementById(`s_${k}_1`);
+                const s2 = document.getElementById(`s_${k}_2`);
+                payload.data[k] = {
+                    t1: k.startsWith('q') ? s1.previousElementSibling.innerText : document.getElementById(`t_${k}_1`).innerText,
+                    t2: k.startsWith('q') ? s2.previousElementSibling.innerText : document.getElementById(`t_${k}_2`).innerText,
+                    s1: s1.value || "0",
+                    s2: s2.value || "0"
                 };
             });
 
             try {
-                await addDoc(collection(db, "brackets"), { 
-                    userName: name, 
-                    winner: document.getElementById('final-winner').innerText,
-                    results: results,
-                    date: new Date() 
-                });
+                await addDoc(collection(db, "brackets"), payload);
                 window.location.href = 'results.html';
-            } catch(e) { alert("שגיאה בשמירה"); }
+            } catch(e) {
+                alert("שגיאה בשמירת הנתונים. נסה שנית.");
+            }
         };
     </script>
 </body>
