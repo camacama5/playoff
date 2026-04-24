@@ -124,6 +124,7 @@
                 
                 let t1, t2;
                 if (m.startsWith('q')) {
+                    // תיקון: שליפת השם מתוך ה-team-info שנמצא לפני ה-input
                     t1 = document.getElementById(`s_${m}_1`).previousElementSibling.querySelector('.team-name').innerText;
                     t2 = document.getElementById(`s_${m}_2`).previousElementSibling.querySelector('.team-name').innerText;
                 } else {
@@ -139,6 +140,7 @@
             const setNext = (id, team) => {
                 const nameEl = document.getElementById(`t_${id}`);
                 const logoEl = document.getElementById(`l_${id}`);
+                if (!nameEl) return;
                 nameEl.innerText = team;
                 if (team !== "---" && teamLogos[team]) {
                     logoEl.src = teamLogos[team];
