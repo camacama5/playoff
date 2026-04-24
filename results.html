@@ -2,23 +2,28 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>רשימת משתתפים</title>
+    <title>מי מילא תחזית?</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .box { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+        .box { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: right; }
         tr:hover { background: #f9f9f9; cursor: pointer; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-        .modal-content { background: white; margin: 10% auto; padding: 25px; width: 80%; max-width: 500px; border-radius: 10px; position: relative; }
-        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; align-items: center; }
-        .score { background: #1a73e8; color: white; padding: 2px 10px; border-radius: 15px; font-weight: bold; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); overflow-y: auto; }
+        .modal-content { background: #f0f2f5; margin: 2% auto; padding: 20px; width: 95%; max-width: 1100px; border-radius: 10px; position: relative; }
+        /* עיצוב הבארקט בתוך המודאל */
+        .bracket-view { display: flex; justify-content: space-between; gap: 15px; flex-direction: row-reverse; margin-top: 20px; }
+        .v-col { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 15px; }
+        .v-match { background: white; border-radius: 6px; padding: 10px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .v-match h4 { margin: 0 0 5px 0; font-size: 11px; color: #888; background: #f8f9fa; }
+        .v-row { display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0; font-weight: bold; }
+        .v-score { background: #eee; padding: 0 6px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>מי מילא תחזית?</h2>
-        <table>
+        <table id="mainTable">
             <thead><tr><th>שם</th><th>תאריך</th></tr></thead>
             <tbody id="list"></tbody>
         </table>
@@ -26,46 +31,36 @@
 
     <div id="m" class="modal" onclick="this.style.display='none'">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 id="mt"></h3>
-            <div id="mb"></div>
+            <h2 id="mt"></h2>
+            <div id="bracketBody" class="bracket-view"></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        const firebaseConfig = { apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM", authDomain: "playoffhapoel.firebaseapp.com", projectId: "playoffhapoel", storageBucket: "playoffhapoel.firebasestorage.app", messagingSenderId: "263243431887", appId: "1:263243431887:web:2515ff99c8962a4cbf5cba" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM",
-            authDomain: "playoffhapoel.firebaseapp.com",
-            projectId: "playoffhapoel",
-            storageBucket: "playoffhapoel.firebasestorage.app",
-            messagingSenderId: "263243431887",
-            appId: "1:263243431887:web:2515ff99c8962a4cbf5cba"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const q = query(collection(db, "brackets"), orderBy("date", "desc"));
-        const snap = await getDocs(q);
-        const list = document.getElementById('list');
-
+        const snap = await getDocs(query(collection(db, "brackets"), orderBy("date", "desc")));
         snap.forEach(doc => {
             const d = doc.data();
             const tr = document.createElement('tr');
             tr.innerHTML = `<td>${d.userName}</td><td>${d.date.toDate().toLocaleDateString('he-IL')}</td>`;
             tr.onclick = () => {
-                document.getElementById('mt').innerText = "התחזית של " + d.userName;
-                let h = "";
-                const labels = { m1: "משחק 1", m4: "משחק 4", m2: "משחק 2", m3: "משחק 3", sf1: "חצי 1", sf2: "חצי 2", f: "גמר" };
-                for (let k in d.data) {
-                    h += `<div class="row"><span><strong>${labels[k]}:</strong> ${d.data[k].t}</span><span class="score">${d.data[k].s}</span></div>`;
-                }
-                document.getElementById('mb').innerHTML = h;
+                document.getElementById('mt').innerText = "הניחוש של: " + d.userName;
+                const b = d.data;
+                const renderMatch = (id, label) => `<div class="v-match"><h4>${label}</h4>
+                    <div class="v-row"><span>${b[id].t1}</span><span class="v-score">${b[id].s1}</span></div>
+                    <div class="v-row"><span>${b[id].t2}</span><span class="v-score">${b[id].s2}</span></div></div>`;
+                
+                document.getElementById('bracketBody').innerHTML = `
+                    <div class="v-col">${renderMatch('q1','משחק 1')} ${renderMatch('q4','משחק 4')} ${renderMatch('q2','משחק 2')} ${renderMatch('q3','משחק 3')}</div>
+                    <div class="v-col">${renderMatch('sf1','חצי גמר 1')} ${renderMatch('sf2','חצי גמר 2')}</div>
+                    <div class="v-col">${renderMatch('f','סדרת הגמר')}</div>`;
                 document.getElementById('m').style.display = 'block';
             };
-            list.appendChild(tr);
+            document.getElementById('list').appendChild(tr);
         });
     </script>
 </body>
