@@ -32,6 +32,7 @@
         .center-area { flex: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
         .winner-display { background: white; border: 3px solid #cc0000; padding: 20px; border-radius: 12px; text-align: center; width: 280px; box-shadow: 0 5px 20px rgba(204,0,0,0.2); }
         .winner-name { color: #cc0000; font-size: 28px; font-weight: 900; display: block; margin-top: 5px; }
+        .winner-logo-big { width: 40px; height: 40px; object-fit: contain; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -113,7 +114,6 @@
         const renderGame = (id, label, isFinal = false) => {
             const getTeamHtml = (teamName, score) => {
                 const logoPath = teamLogos[teamName];
-                // אם יש לוגו, מציג אותו. אם אין, משאיר רווח ריק
                 const logoImg = logoPath ? `<img src="${logoPath}" class="team-logo" onerror="this.style.opacity='0'">` : `<div style="width:25px"></div>`;
                 return `
                     <div class="team-line">
@@ -131,13 +131,18 @@
                 </div>`;
         };
 
+        const winnerLogo = teamLogos[d.winner] ? `<img src="${teamLogos[d.winner]}" class="winner-logo-big" onerror="this.style.display='none'">` : '';
+
         document.getElementById('bracketBody').innerHTML = `
             <div class="bracket-col">${renderGame('q1','משחק 1')} ${renderGame('q4','משחק 4')}</div>
             <div class="bracket-col">${renderGame('sf1','חצי גמר 1')}</div>
             <div class="center-area">
                 <div class="winner-display">
-                    <span style="color:#06274c; font-weight:bold;">הזוכה הגדולה:</span>
-                    <span class="winner-name">${d.winner || '---'}</span>
+                    <span style="color:#06274c; font-weight:bold;">הזוכה:</span>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;">
+                        ${winnerLogo}
+                        <span class="winner-name">${d.winner || '---'}</span>
+                    </div>
                 </div>
                 ${renderGame('f','סדרת הגמר', true)}
             </div>
