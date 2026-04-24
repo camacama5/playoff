@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* 1. כותרת מונמכת */
         h1 { 
             font-family: 'Karantina', cursive;
             margin-top: 80px; 
@@ -28,7 +27,6 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
         }
 
-        /* 2. קירוב התיבות */
         .bracket-container { 
             display: flex; 
             justify-content: center; 
@@ -50,7 +48,6 @@
             position: relative;
         }
 
-        /* 3. הגדלת התיבות */
         .matchup { 
             background: white; 
             border-radius: 6px; 
@@ -63,7 +60,7 @@
             position: relative;
         }
 
-        /* 4. קווים מקשרים (CSS בלבד) */
+        /* קווים מקשרים */
         .column:nth-child(1) .matchup::after, .column:nth-child(2) .matchup::after {
             content: ""; position: absolute; left: 100%; top: 50%;
             width: 10px; border-top: 1px solid rgba(255,255,255,0.4);
@@ -104,14 +101,12 @@
 
         #pName { width: 85%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; }
         
-        /* כפתור שלח עם פונט Karantina */
         button { 
             background: var(--blue); color: white; border: none; padding: 10px; border-radius: 4px; 
             cursor: pointer; font-size: 20px; font-weight: bold; width: 100%; 
             font-family: 'Karantina', sans-serif; 
         }
 
-        /* התאמה לנייד - ללא שינוי */
         @media (max-width: 950px) {
             .bracket-container { flex-direction: column; gap: 30px; }
             .column { min-height: auto; width: 100%; align-items: center; }
@@ -142,7 +137,7 @@
 
         <div class="column">
             <div class="final-winner-box">
-                <span style="font-weight:bold; color:var(--blue); font-size: 12px;">הזוכה הגדולה:</span>
+                <span style="font-weight:bold; color:var(--blue); font-size: 14px;">הזוכה:</span>
                 <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
                     <img id="winner-logo" class="team-logo" style="display:none; width:30px; height:30px;">
                     <span id="final-winner">---</span>
@@ -196,7 +191,8 @@
         };
 
         window.handleInput = function(el, target, otherId) {
-            let val = parseInt(el.value) || 0;
+            let val = parseInt(el.value);
+            if (isNaN(val)) el.value = "";
             if (val > target) el.value = target;
             if (val < 0) el.value = 0;
             const other = document.getElementById(otherId);
@@ -209,7 +205,7 @@
                 const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
                 const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
                 let t1, t2;
-                if (k_is_q(m)) {
+                if (m.startsWith('q')) {
                     t1 = document.getElementById(`s_${m}_1`).closest('.team-row').querySelector('.team-name').innerText;
                     t2 = document.getElementById(`s_${m}_2`).closest('.team-row').querySelector('.team-name').innerText;
                 } else {
@@ -218,8 +214,6 @@
                 }
                 return s1 === target ? t1 : (s2 === target ? t2 : "---");
             };
-            
-            function k_is_q(k) { return k.startsWith('q'); }
 
             const setNext = (id, team) => {
                 const nameEl = document.getElementById(`t_${id}`);
