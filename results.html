@@ -4,16 +4,25 @@
     <meta charset="UTF-8">
     <title>תוצאות תחזית - הפועל</title>
     <style>
-        /* עיצוב בסיסי לדף התוצאות */
-        body { font-family: sans-serif; background: #f0f2f5; direction: rtl; padding: 20px; text-align: center; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* עיצוב בסיסי לדף התוצאות - רקע כחול-אדום */
+        body { 
+            font-family: sans-serif; 
+            background: linear-gradient(135deg, #06274c 0%, #cc0000 100%); 
+            background-attachment: fixed;
+            direction: rtl; 
+            padding: 20px; 
+            text-align: center; 
+            color: white;
+        }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: #333; }
+        h2 { color: #06274c; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 12px; border: 1px solid #ddd; text-align: right; }
         tr:hover { background: #f1f1f1; cursor: pointer; }
 
         /* עיצוב המודאל (החלון הקופץ) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; overflow-y: auto; }
-        .modal-content { background-color: #e8ebf0; margin: 2% auto; padding: 30px; width: 92%; max-width: 1250px; border-radius: 15px; position: relative; }
+        .modal-content { background-color: #e8ebf0; margin: 2% auto; padding: 30px; width: 92%; max-width: 1250px; border-radius: 15px; position: relative; color: #333; }
         .close-btn { position: absolute; left: 25px; top: 15px; font-size: 40px; cursor: pointer; color: #06274c; font-weight: bold; }
 
         /* מבנה הבראקט */
@@ -75,7 +84,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // מילון הלוגואים - מעודכן בדיוק לפי 8 הקבוצות שציינת
     const teamLogos = {
         "מכבי רחובות": "logos/rehovot.png",
         "עירוני נהריה": "logos/nahariya.png",
@@ -133,15 +141,18 @@
 
         const winnerLogo = teamLogos[d.winner] ? `<img src="${teamLogos[d.winner]}" class="winner-logo-big" onerror="this.style.display='none'">` : '';
 
+        // תיקון יישור הנקודות בתיבת הזוכה
         document.getElementById('bracketBody').innerHTML = `
             <div class="bracket-col">${renderGame('q1','משחק 1')} ${renderGame('q4','משחק 4')}</div>
             <div class="bracket-col">${renderGame('sf1','חצי גמר 1')}</div>
             <div class="center-area">
                 <div class="winner-display">
-                    <span style="color:#06274c; font-weight:bold;">הזוכה:</span>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;">
-                        ${winnerLogo}
-                        <span class="winner-name">${d.winner || '---'}</span>
+                    <div style="direction: rtl;">
+                        <span style="color:#06274c; font-weight:bold;">הזוכה:</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;">
+                            ${winnerLogo}
+                            <span class="winner-name">${d.winner || '---'}</span>
+                        </div>
                     </div>
                 </div>
                 ${renderGame('f','סדרת הגמר', true)}
