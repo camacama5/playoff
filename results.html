@@ -11,25 +11,44 @@
         tr:hover { background: #f9f9f9; cursor: pointer; }
         
         /* מודאל */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow-y: auto; z-index: 1000; }
-        .modal-content { background: #e8ebf0; margin: 2% auto; padding: 20px; width: 95%; max-width: 1300px; border-radius: 12px; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8) !important; overflow-y: auto; z-index: 1000; }
+        .modal-content { background: #e8ebf0 !important; margin: 2% auto; padding: 20px; width: 95%; max-width: 1300px; border-radius: 12px; position: relative; }
         
         /* בארקט סימטרי בתוך המודאל */
         .bracket-view { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; direction: ltr; }
         .v-col { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 15px; height: 500px; }
         .v-qf { flex: 0 0 220px; }
-        .v-match { background: white; border-radius: 6px; padding: 0; border-right: 4px solid #06274c; box-shadow: 0 2px 8px rgba(0,0,0,0.1); direction: rtl; overflow: hidden; }
-        .v-match h4 { margin: 0; font-size: 10px; color: white; background: #06274c; padding: 4px; text-align: center; }
-        .v-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; font-size: 13px; border-bottom: 1px solid #eee; font-weight: bold; }
-        .v-score { color: #cc0000; font-size: 16px; font-weight: bold; }
+        
+        .v-match { 
+            background: white !important; 
+            border-radius: 6px !important; 
+            padding: 0 !important; 
+            border: none !important;
+            border-right: 5px solid #06274c !important; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; 
+            direction: rtl; 
+            overflow: hidden; 
+        }
+        .v-match h4 { margin: 0 !important; font-size: 11px !important; color: white !important; background: #06274c !important; padding: 5px !important; text-align: center !important; }
+        .v-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 14px; border-bottom: 1px solid #eee; font-weight: bold; color: #333 !important; }
+        .v-score { color: #cc0000 !important; font-size: 18px !important; font-weight: bold !important; background: none !important; }
         
         /* מרכז המודאל - זוכה וגמר */
         .v-center { flex: 0 0 300px; justify-content: center; gap: 30px; }
         .v-final-box { border-right-color: #cc0000 !important; }
-        .v-winner { background: white; color: #cc0000; border-radius: 8px; padding: 15px; font-weight: bold; border: 3px solid #cc0000; direction: rtl; box-shadow: 0 4px 10px rgba(204,0,0,0.2); }
-        #win-name { font-size: 24px; color: #cc0000; display: block; margin-top: 5px; text-shadow: none; }
+        .v-winner { 
+            background: white !important; 
+            color: #cc0000 !important; 
+            border-radius: 8px !important; 
+            padding: 20px !important; 
+            font-weight: bold !important; 
+            border: 3px solid #cc0000 !important; 
+            direction: rtl; 
+            box-shadow: 0 4px 15px rgba(204,0,0,0.3) !important; 
+        }
+        #win-name { font-size: 26px !important; color: #cc0000 !important; display: block; margin-top: 8px; }
         
-        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 30px; cursor: pointer; color: #06274c; }
+        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 35px; cursor: pointer; color: #06274c !important; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -74,7 +93,6 @@
                     document.getElementById('mt').innerText = "הניחוש של: " + d.userName;
                     const b = d.data;
                     
-                    // פונקציה פנימית לרינדור משחק בתוך המודאל
                     const r = (id, label, extraClass='') => `
                         <div class="v-match ${extraClass}">
                             <h4>${label}</h4>
@@ -82,7 +100,6 @@
                             <div class="v-row"><span>${b[id].t2}</span><span class="v-score">${b[id].s2}</span></div>
                         </div>`;
                     
-                    // בניית המבנה הסימטרי (ימין -> מרכז -> שמאל)
                     document.getElementById('bracketBody').innerHTML = `
                         <div class="v-col v-qf">${r('q1','משחק 1')} ${r('q4','משחק 4')}</div>
                         <div class="v-col">${r('sf1','חצי גמר 1')}</div>
