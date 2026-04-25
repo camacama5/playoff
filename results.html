@@ -43,25 +43,33 @@
 
         /* --- התאמה אגרסיבית לנייד --- */
         @media (max-width: 768px) {
-            .modal-content { padding: 10px; width: 98%; margin: 2% auto; }
-            .bracket-grid { gap: 2px; margin-top: 5px; }
-            .bracket-col { gap: 5px; height: auto; min-height: 400px; transform: none !important; }
+            .modal-content { padding: 5px; width: 98%; margin: 2% auto; overflow: hidden; }
+            .bracket-grid { gap: 2px; margin-top: 5px; align-items: center; }
             
-            /* כיווץ דרסטי של הריבועים */
-            .game-card { width: 90px; border-right-width: 3px; }
-            .game-header { font-size: 7px; padding: 2px; }
-            .team-line { padding: 3px 4px; }
-            .team-info { font-size: 8px; gap: 2px; }
-            .team-logo { width: 12px; height: 12px; }
-            .score-val { font-size: 12px; }
+            /* יישור כל העמודות למרכז כדי שלא יקפצו למעלה/למטה */
+            .bracket-col { 
+                gap: 8px; 
+                height: 380px; 
+                justify-content: center !important; 
+                transform: none !important; 
+                flex: none;
+            }
             
-            .center-area { gap: 30px; padding-top: 5px; flex: 1; }
-            .winner-display { width: 95px; padding: 8px; border-width: 2px; }
-            .winner-name { font-size: 12px; }
-            .winner-logo-big { width: 18px; height: 18px; }
+            /* כיווץ דרסטי של הריבועים שייכנסו ברוחב */
+            .game-card { width: 68px; border-right-width: 2px; }
+            .game-header { font-size: 6px; padding: 2px; }
+            .team-line { padding: 2px 3px; }
+            .team-info { font-size: 6px; gap: 2px; }
+            .team-logo { width: 10px; height: 10px; }
+            .score-val { font-size: 9px; }
             
-            .close-btn { left: 10px; top: 5px; font-size: 28px; }
-            #modalUserTitle { font-size: 14px; margin-top: 20px; }
+            .center-area { gap: 20px; padding-top: 0; justify-content: center; height: 380px; flex: none; }
+            .winner-display { width: 75px; padding: 5px; border-width: 2px; }
+            .winner-name { font-size: 9px; }
+            .winner-logo-big { width: 14px; height: 14px; }
+            
+            .close-btn { left: 10px; top: 5px; font-size: 25px; }
+            #modalUserTitle { font-size: 13px; margin: 15px 0 5px 0; }
         }
     </style>
 </head>
@@ -169,7 +177,7 @@
             <div class="center-area">
                 <div class="winner-display">
                     <span style="color:white; font-weight:bold;">:הזוכה</span>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 5px;">
                         ${winnerLogo}
                         <span class="winner-name">${d.winner || '---'}</span>
                     </div>
