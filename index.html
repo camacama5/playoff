@@ -1,269 +1,269 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>תחזית הפלייאוף - ליגה לאומית</title>
-    <style>
-        :root { --blue: #06274c; --red: #cc0000; }
-        
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #06274c 0%, #cc0000 100%); 
-            background-attachment: fixed;
-            margin: 0; 
-            padding: 5px; 
-            text-align: center; 
-            color: white;
-            min-height: 100vh;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תחזית הפלייאוף - ליגה לאומית</title>
+    <style>
+        :root { --blue: #06274c; --red: #cc0000; }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #06274c 0%, #cc0000 100%); 
+            background-attachment: fixed;
+            margin: 0; 
+            padding: 5px; 
+            text-align: center; 
+            color: white;
+            min-height: 100vh;
+        }
 
-        h1 { margin: 20px 0 -10px 0; font-size: 22px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); position: relative; z-index: 10; }
+        h1 { margin: 20px 0 -10px 0; font-size: 22px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); position: relative; z-index: 10; }
 
-        /* קונטיינר הבארקט עם קווים מקשרים */
-        .bracket-container { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            max-width: 1300px; 
-            margin: 0 auto; 
-            padding: 10px;
-            position: relative;
-        }
+        /* קונטיינר הבארקט עם קווים מקשרים */
+        .bracket-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 10px;
+            position: relative;
+        }
 
-        .column { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-around; 
-            gap: 10px; 
-            min-height: 500px; 
-            position: relative;
-        }
+        .column { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-around; 
+            gap: 10px; 
+            min-height: 500px; 
+            position: relative;
+        }
 
-        /* עיצוב התיבות */
-        .matchup { 
-            background: white; 
-            border-radius: 6px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
-            border-right: 4px solid var(--blue); 
-            overflow: hidden; 
-            width: 210px; 
-            z-index: 2;
-            color: #333;
-        }
+        /* עיצוב התיבות */
+        .matchup { 
+            background: white; 
+            border-radius: 6px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+            border-right: 4px solid var(--blue); 
+            overflow: hidden; 
+            width: 210px; 
+            z-index: 2;
+            color: #333;
+        }
 
-        .matchup h3 { margin: 0; font-size: 12px; color: white; background: var(--blue); padding: 5px; }
-        .team-row { display: flex; justify-content: space-between; align-items: center; padding: 6px; border-bottom: 1px solid #eee; }
-        .team-info { display: flex; align-items: center; gap: 5px; }
-        .team-logo { width: 22px; height: 22px; object-fit: contain; }
-        .team-name { font-weight: bold; font-size: 13px; }
-        
-        input { width: 38px; padding: 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 16px; color: var(--blue); }
+        .matchup h3 { margin: 0; font-size: 12px; color: white; background: var(--blue); padding: 5px; }
+        .team-row { display: flex; justify-content: space-between; align-items: center; padding: 6px; border-bottom: 1px solid #eee; }
+        .team-info { display: flex; align-items: center; gap: 5px; }
+        .team-logo { width: 22px; height: 22px; object-fit: contain; }
+        .team-name { font-weight: bold; font-size: 13px; }
+        
+        input { width: 38px; padding: 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 16px; color: var(--blue); }
 
-        /* קווים מקשרים עבים יותר */
-        .column::after {
-            content: "";
-            position: absolute;
-            top: 25%;
-            bottom: 25%;
-            border: 2px solid rgba(255,255,255,0.6);
-            width: 15px;
-            z-index: 1;
-        }
-        
-        /* עמודה ימנית (משחקים 1 ו-4) - קווים שמאלה לחצי הגמר */
-        .column:nth-child(1)::after {
-            left: -15px;
-            border-right: none;
-        }
-        
-        /* עמודה שמאלית (משחקים 2 ו-3) - קווים ימינה לחצי הגמר */
-        .column:nth-child(5)::after {
-            right: -15px;
-            border-left: none;
-        }
-        
-        /* הסרת קווים משאר העמודות */
-        .column:nth-child(2)::after, 
-        .column:nth-child(3)::after, 
-        .column:nth-child(4)::after { 
-            display: none; 
-        }
+        /* קווים מקשרים עבים יותר */
+        .column::after {
+            content: "";
+            position: absolute;
+            top: 25%;
+            bottom: 25%;
+            border: 2px solid rgba(255,255,255,0.6);
+            width: 15px;
+            z-index: 1;
+        }
+        
+        /* עמודה ימנית (משחקים 1 ו-4) - קווים שמאלה לחצי הגמר */
+        .column:nth-child(1)::after {
+            left: -15px;
+            border-right: none;
+        }
+        
+        /* עמודה שמאלית (משחקים 2 ו-3) - קווים ימינה לחצי הגמר */
+        .column:nth-child(5)::after {
+            right: -15px;
+            border-left: none;
+        }
+        
+        /* הסרת קווים משאר העמודות */
+        .column:nth-child(2)::after, 
+        .column:nth-child(3)::after, 
+        .column:nth-child(4)::after { 
+            display: none; 
+        }
 
-        .final-winner-box { 
-            background: white; 
-            padding: 8px; 
-            border-radius: 8px; 
-            border: 2px solid var(--red); 
-            color: #333;
-            margin-bottom: 5px;
-        }
+        .final-winner-box { 
+            background: white; 
+            padding: 8px; 
+            border-radius: 8px; 
+            border: 2px solid var(--red); 
+            color: #333;
+            margin-bottom: 5px;
+        }
 
-        #final-winner { font-size: 18px; font-weight: bold; color: var(--red); }
+        #final-winner { font-size: 18px; font-weight: bold; color: var(--red); }
 
-        .submit-section { 
-            max-width: 320px; 
-            margin: 5px auto; 
-            background: white; 
-            padding: 12px; 
-            border-radius: 8px; 
-            border-top: 4px solid var(--red);
-            color: #333;
-        }
+        .submit-section { 
+            max-width: 320px; 
+            margin: 5px auto; 
+            background: white; 
+            padding: 12px; 
+            border-radius: 8px; 
+            border-top: 4px solid var(--red);
+            color: #333;
+        }
 
-        #pName { width: 85%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: var(--blue); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; }
+        #pName { width: 85%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: var(--blue); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; }
 
-        /* התאמה לנייד - צמצום וסידור אנכי */
-        @media (max-width: 950px) {
-            .bracket-container { flex-direction: column; gap: 30px; }
-            .column { min-height: auto; width: 100%; align-items: center; }
-            .column::after, .column:nth-child(1)::after, .column:nth-child(5)::after { display: none; }
-            .matchup { width: 85%; max-width: 250px; }
-            h1 { font-size: 18px; margin-top: 10px; margin-bottom: 10px; }
-        }
-    </style>
+        /* התאמה לנייד - צמצום וסידור אנכי */
+        @media (max-width: 950px) {
+            .bracket-container { flex-direction: column; gap: 30px; }
+            .column { min-height: auto; width: 100%; align-items: center; }
+            .column::after, .column:nth-child(1)::after, .column:nth-child(5)::after { display: none; }
+            .matchup { width: 85%; max-width: 250px; }
+            h1 { font-size: 18px; margin-top: 10px; margin-bottom: 10px; }
+        }
+    </style>
 </head>
 <body>
-    <h1>הפלייאוף של קהילת אוהדי הפועל</h1>
-    
-    <div class="bracket-container">
-        <div class="column">
-            <div class="matchup"><h3>משחק 1</h3>
-                <div class="team-row"><div class="team-info"><img src="logos/rehovot.png" class="team-logo"><span class="team-name">מכבי רחובות</span></div><input type="number" id="s_q1_1" min="0" max="2" oninput="handleInput(this, 2, 's_q1_2')"></div>
-                <div class="team-row"><div class="team-info"><img src="logos/ramat_hasharon.png" class="team-logo"><span class="team-name">א.ס רמת השרון</span></div><input type="number" id="s_q1_2" min="0" max="2" oninput="handleInput(this, 2, 's_q1_1')"></div></div>
-            <div class="matchup"><h3>משחק 4</h3>
-                <div class="team-row"><div class="team-info"><img src="logos/ashdod.png" class="team-logo"><span class="team-name">מכבי אשדוד</span></div><input type="number" id="s_q4_1" min="0" max="2" oninput="handleInput(this, 2, 's_q4_2')"></div>
-                <div class="team-row"><div class="team-info"><img src="logos/ashkelon.png" class="team-logo"><span class="team-name">א.ס אליצור אשקלון</span></div><input type="number" id="s_q4_2" min="0" max="2" oninput="handleInput(this, 2, 's_q4_1')"></div></div>
-        </div>
+    <h1>הפלייאוף של קהילת אוהדי הפועל</h1>
+    
+    <div class="bracket-container">
+        <div class="column">
+            <div class="matchup"><h3>משחק 1</h3>
+                <div class="team-row"><div class="team-info"><img src="logos/rehovot.png" class="team-logo"><span class="team-name">מכבי רחובות</span></div><input type="number" id="s_q1_1" min="0" max="2" oninput="handleInput(this, 2, 's_q1_2')"></div>
+                <div class="team-row"><div class="team-info"><img src="logos/otef_darom.png" class="team-logo"><span class="team-name">עוטף דרום</span></div><input type="number" id="s_q1_2" min="0" max="2" oninput="handleInput(this, 2, 's_q1_1')"></div></div>
+            <div class="matchup"><h3>משחק 4</h3>
+                <div class="team-row"><div class="team-info"><img src="logos/ashdod.png" class="team-logo"><span class="team-name">מכבי אשדוד</span></div><input type="number" id="s_q4_1" min="0" max="2" oninput="handleInput(this, 2, 's_q4_2')"></div>
+                <div class="team-row"><div class="team-info"><img src="logos/ashkelon.png" class="team-logo"><span class="team-name">א.ס אליצור אשקלון</span></div><input type="number" id="s_q4_2" min="0" max="2" oninput="handleInput(this, 2, 's_q4_1')"></div></div>
+        </div>
 
-        <div class="column">
-            <div class="matchup"><h3>חצי גמר 1</h3>
-                <div class="team-row"><div class="team-info"><img id="l_sf1_1" class="team-logo" style="opacity:0"><span id="t_sf1_1" class="team-name">---</span></div><input type="number" id="s_sf1_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_2')"></div>
-                <div class="team-row"><div class="team-info"><img id="l_sf1_2" class="team-logo" style="opacity:0"><span id="t_sf1_2" class="team-name">---</span></div><input type="number" id="s_sf1_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_1')"></div></div>
-        </div>
+        <div class="column">
+            <div class="matchup"><h3>חצי גמר 1</h3>
+                <div class="team-row"><div class="team-info"><img id="l_sf1_1" class="team-logo" style="opacity:0"><span id="t_sf1_1" class="team-name">---</span></div><input type="number" id="s_sf1_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_2')"></div>
+                <div class="team-row"><div class="team-info"><img id="l_sf1_2" class="team-logo" style="opacity:0"><span id="t_sf1_2" class="team-name">---</span></div><input type="number" id="s_sf1_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf1_1')"></div></div>
+        </div>
 
-        <div class="column">
-            <div class="final-winner-box">
-                <span style="font-weight:bold; color:var(--blue); font-size: 12px;">הזוכה:</span>
-                <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
-                    <img id="winner-logo" class="team-logo" style="display:none; width:30px; height:30px;">
-                    <span id="final-winner">---</span>
-                </div>
-            </div>
-            <div class="matchup" style="border-right-color: var(--red);"><h3>סדרת הגמר</h3>
-                <div class="team-row"><div class="team-info"><img id="l_f_1" class="team-logo" style="opacity:0"><span id="t_f_1" class="team-name">---</span></div><input type="number" id="s_f_1" min="0" max="3" oninput="handleInput(this, 3, 's_f_2')"></div>
-                <div class="team-row"><div class="team-info"><img id="l_f_2" class="team-logo" style="opacity:0"><span id="t_f_2" class="team-name">---</span></div><input type="number" id="s_f_2" min="0" max="3" oninput="handleInput(this, 3, 's_f_1')"></div></div>
-        </div>
+        <div class="column">
+            <div class="final-winner-box">
+                <span style="font-weight:bold; color:var(--blue); font-size: 12px;">הזוכה:</span>
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <img id="winner-logo" class="team-logo" style="display:none; width:30px; height:30px;">
+                    <span id="final-winner">---</span>
+                </div>
+            </div>
+            <div class="matchup" style="border-right-color: var(--red);"><h3>סדרת הגמר</h3>
+                <div class="team-row"><div class="team-info"><img id="l_f_1" class="team-logo" style="opacity:0"><span id="t_f_1" class="team-name">---</span></div><input type="number" id="s_f_1" min="0" max="3" oninput="handleInput(this, 3, 's_f_2')"></div>
+                <div class="team-row"><div class="team-info"><img id="l_f_2" class="team-logo" style="opacity:0"><span id="t_f_2" class="team-name">---</span></div><input type="number" id="s_f_2" min="0" max="3" oninput="handleInput(this, 3, 's_f_1')"></div></div>
+        </div>
 
-        <div class="column">
-            <div class="matchup"><h3>חצי גמר 2</h3>
-                <div class="team-row"><div class="team-info"><img id="l_sf2_1" class="team-logo" style="opacity:0"><span id="t_sf2_1" class="team-name">---</span></div><input type="number" id="s_sf2_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_2')"></div>
-                <div class="team-row"><div class="team-info"><img id="l_sf2_2" class="team-logo" style="opacity:0"><span id="t_sf2_2" class="team-name">---</span></div><input type="number" id="s_sf2_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_1')"></div></div>
-        </div>
+        <div class="column">
+            <div class="matchup"><h3>חצי גמר 2</h3>
+                <div class="team-row"><div class="team-info"><img id="l_sf2_1" class="team-logo" style="opacity:0"><span id="t_sf2_1" class="team-name">---</span></div><input type="number" id="s_sf2_1" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_2')"></div>
+                <div class="team-row"><div class="team-info"><img id="l_sf2_2" class="team-logo" style="opacity:0"><span id="t_sf2_2" class="team-name">---</span></div><input type="number" id="s_sf2_2" min="0" max="3" oninput="handleInput(this, 3, 's_sf2_1')"></div></div>
+        </div>
 
-        <div class="column">
-            <div class="matchup"><h3>משחק 2</h3>
-                <div class="team-row"><div class="team-info"><img src="logos/nahariya.png" class="team-logo"><span class="team-name">עירוני נהריה</span></div><input type="number" id="s_q2_1" min="0" max="2" oninput="handleInput(this, 2, 's_q2_2')"></div>
-                <div class="team-row"><div class="team-info"><img src="logos/otef_darom.png" class="team-logo"><span class="team-name">עוטף דרום</span></div><input type="number" id="s_q2_2" min="0" max="2" oninput="handleInput(this, 2, 's_q2_1')"></div></div>
-            <div class="matchup"><h3>משחק 3</h3>
-                <div class="team-row"><div class="team-info"><img src="logos/logoshapoel_haifa.png" class="team-logo"><span class="team-name">הפועל חיפה</span></div><input type="number" id="s_q3_1" min="0" max="2" oninput="handleInput(this, 2, 's_q3_2')"></div>
-                <div class="team-row"><div class="team-info"><img src="logos/shomron.png" class="team-logo"><span class="team-name">אליצור שומרון</span></div><input type="number" id="s_q3_2" min="0" max="2" oninput="handleInput(this, 2, 's_q3_1')"></div></div>
-        </div>
-    </div>
+        <div class="column">
+            <div class="matchup"><h3>משחק 2</h3>
+                <div class="team-row"><div class="team-info"><img src="logos/nahariya.png" class="team-logo"><span class="team-name">עירוני נהריה</span></div><input type="number" id="s_q2_1" min="0" max="2" oninput="handleInput(this, 2, 's_q2_2')"></div>
+                <div class="team-row"><div class="team-info"><img src="logos/ramat_hasharon.png" class="team-logo"><span class="team-name">א.ס רמת השרון</span></div><input type="number" id="s_q2_2" min="0" max="2" oninput="handleInput(this, 2, 's_q2_1')"></div></div>
+            <div class="matchup"><h3>משחק 3</h3>
+                <div class="team-row"><div class="team-info"><img src="logos/logoshapoel_haifa.png" class="team-logo"><span class="team-name">הפועל חיפה</span></div><input type="number" id="s_q3_1" min="0" max="2" oninput="handleInput(this, 2, 's_q3_2')"></div>
+                <div class="team-row"><div class="team-info"><img src="logos/shomron.png" class="team-logo"><span class="team-name">אליצור שומרון</span></div><input type="number" id="s_q3_2" min="0" max="2" oninput="handleInput(this, 2, 's_q3_1')"></div></div>
+        </div>
+    </div>
 
-    <div class="submit-section">
-        <input type="text" id="pName" placeholder="השם שלך">
-        <button id="sendBtn">שלח </button>
-    </div>
+    <div class="submit-section">
+        <input type="text" id="pName" placeholder="השם שלך">
+        <button id="sendBtn">שלח </button>
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-  apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM",
-  authDomain: "playoffhapoel.firebaseapp.com",
-  projectId: "playoffhapoel",
-  storageBucket: "playoffhapoel.firebasestorage.app",
-  messagingSenderId: "263243431887",
-  appId: "1:263243431887:web:2515ff99c8962a4cbf5cba",
-  measurementId: "G-NEV8LBNT8S"
+        const firebaseConfig = {
+  apiKey: "AIzaSyCi3ci9dsoQLMBpJpniiXnFXPnRslPaUeM",
+  authDomain: "playoffhapoel.firebaseapp.com",
+  projectId: "playoffhapoel",
+  storageBucket: "playoffhapoel.firebasestorage.app",
+  messagingSenderId: "263243431887",
+  appId: "1:263243431887:web:2515ff99c8962a4cbf5cba",
+  measurementId: "G-NEV8LBNT8S"
 };
-        const db = getFirestore(initializeApp(firebaseConfig));
+        const db = getFirestore(initializeApp(firebaseConfig));
 
-        const teamLogos = {
-            "מכבי רחובות": "logos/rehovot.png", "עירוני נהריה": "logos/nahariya.png",
-            "הפועל חיפה": "logos/logoshapoel_haifa.png", "מכבי אשדוד": "logos/ashdod.png",
-            "א.ס אליצור אשקלון": "logos/ashkelon.png", "אליצור שומרון": "logos/shomron.png",
-            "עוטף דרום": "logos/otef_darom.png", "א.ס רמת השרון": "logos/ramat_hasharon.png"
-        };
+        const teamLogos = {
+            "מכבי רחובות": "logos/rehovot.png", "עירוני נהריה": "logos/nahariya.png",
+            "הפועל חיפה": "logos/logoshapoel_haifa.png", "מכבי אשדוד": "logos/ashdod.png",
+            "א.ס אליצור אשקלון": "logos/ashkelon.png", "אליצור שומרון": "logos/shomron.png",
+            "עוטף דרום": "logos/otef_darom.png", "א.ס רמת השרון": "logos/ramat_hasharon.png"
+        };
 
-        window.handleInput = function(el, target, otherId) {
-            let val = parseInt(el.value) || 0;
-            if (val > target) el.value = target;
-            if (val < 0) el.value = 0;
-            const other = document.getElementById(otherId);
-            if (parseInt(el.value) === target && (parseInt(other.value) || 0) === target) other.value = target - 1;
-            upd();
-        };
+        window.handleInput = function(el, target, otherId) {
+            let val = parseInt(el.value) || 0;
+            if (val > target) el.value = target;
+            if (val < 0) el.value = 0;
+            const other = document.getElementById(otherId);
+            if (parseInt(el.value) === target && (parseInt(other.value) || 0) === target) other.value = target - 1;
+            upd();
+        };
 
-        function upd() {
-            const getWin = (m, target) => {
-                const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
-                const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
-                let t1, t2;
-                if (m.startsWith('q')) {
-                    t1 = document.getElementById(`s_${m}_1`).closest('.team-row').querySelector('.team-name').innerText;
-                    t2 = document.getElementById(`s_${m}_2`).closest('.team-row').querySelector('.team-name').innerText;
-                } else {
-                    t1 = document.getElementById(`t_${m}_1`).innerText;
-                    t2 = document.getElementById(`t_${m}_2`).innerText;
-                }
-                return s1 === target ? t1 : (s2 === target ? t2 : "---");
-            };
+        function upd() {
+            const getWin = (m, target) => {
+                const s1 = parseInt(document.getElementById(`s_${m}_1`).value) || 0;
+                const s2 = parseInt(document.getElementById(`s_${m}_2`).value) || 0;
+                let t1, t2;
+                if (m.startsWith('q')) {
+                    t1 = document.getElementById(`s_${m}_1`).closest('.team-row').querySelector('.team-name').innerText;
+                    t2 = document.getElementById(`s_${m}_2`).closest('.team-row').querySelector('.team-name').innerText;
+                } else {
+                    t1 = document.getElementById(`t_${m}_1`).innerText;
+                    t2 = document.getElementById(`t_${m}_2`).innerText;
+                }
+                return s1 === target ? t1 : (s2 === target ? t2 : "---");
+            };
 
-            const setNext = (id, team) => {
-                const nameEl = document.getElementById(`t_${id}`);
-                const logoEl = document.getElementById(`l_${id}`);
-                nameEl.innerText = team;
-                if (team !== "---" && teamLogos[team]) { logoEl.src = teamLogos[team]; logoEl.style.opacity = "1"; }
-                else { logoEl.style.opacity = "0"; }
-            };
+            const setNext = (id, team) => {
+                const nameEl = document.getElementById(`t_${id}`);
+                const logoEl = document.getElementById(`l_${id}`);
+                nameEl.innerText = team;
+                if (team !== "---" && teamLogos[team]) { logoEl.src = teamLogos[team]; logoEl.style.opacity = "1"; }
+                else { logoEl.style.opacity = "0"; }
+            };
 
-            setNext('sf1_1', getWin('q1', 2)); setNext('sf1_2', getWin('q4', 2));
-            setNext('sf2_1', getWin('q2', 2)); setNext('sf2_2', getWin('q3', 2));
-            setNext('f_1', getWin('sf1', 3)); setNext('f_2', getWin('sf2', 3));
+            setNext('sf1_1', getWin('q1', 2)); setNext('sf1_2', getWin('q4', 2));
+            setNext('sf2_1', getWin('q2', 2)); setNext('sf2_2', getWin('q3', 2));
+            setNext('f_1', getWin('sf1', 3)); setNext('f_2', getWin('sf2', 3));
 
-            const winner = getWin('f', 3);
-            document.getElementById('final-winner').innerText = winner;
-            const winL = document.getElementById('winner-logo');
-            if (winner !== "---" && teamLogos[winner]) { winL.src = teamLogos[winner]; winL.style.display = "block"; }
-            else { winL.style.display = "none"; }
-        }
+            const winner = getWin('f', 3);
+            document.getElementById('final-winner').innerText = winner;
+            const winL = document.getElementById('winner-logo');
+            if (winner !== "---" && teamLogos[winner]) { winL.src = teamLogos[winner]; winL.style.display = "block"; }
+            else { winL.style.display = "none"; }
+        }
 
-        document.getElementById('sendBtn').onclick = async () => {
-            const n = document.getElementById('pName').value;
-            if(!n) return alert("אנא הזן שם");
-            const payload = { userName: n, winner: document.getElementById('final-winner').innerText, date: new Date(), data: {} };
-            ['q1','q2','q3','q4','sf1','sf2','f'].forEach(k => {
-                const s1 = document.getElementById(`s_${k}_1`).value || "0";
-                const s2 = document.getElementById(`s_${k}_2`).value || "0";
-                let t1, t2;
-                if (k.startsWith('q')) {
-                    t1 = document.getElementById(`s_${k}_1`).closest('.team-row').querySelector('.team-name').innerText;
-                    t2 = document.getElementById(`s_${k}_2`).closest('.team-row').querySelector('.team-name').innerText;
-                } else {
-                    t1 = document.getElementById(`t_${k}_1`).innerText;
-                    t2 = document.getElementById(`t_${k}_2`).innerText;
-                }
-                payload.data[k] = { t1, t2, s1, s2 };
-            });
-            try { await addDoc(collection(db, "brackets"), payload); window.location.href = 'results.html'; }
-            catch(e) { alert("שגיאה בשמירה"); }
-        };
-    </script>
+        document.getElementById('sendBtn').onclick = async () => {
+            const n = document.getElementById('pName').value;
+            if(!n) return alert("אנא הזן שם");
+            const payload = { userName: n, winner: document.getElementById('final-winner').innerText, date: new Date(), data: {} };
+            ['q1','q2','q3','q4','sf1','sf2','f'].forEach(k => {
+                const s1 = document.getElementById(`s_${k}_1`).value || "0";
+                const s2 = document.getElementById(`s_${k}_2`).value || "0";
+                let t1, t2;
+                if (k.startsWith('q')) {
+                    t1 = document.getElementById(`s_${k}_1`).closest('.team-row').querySelector('.team-name').innerText;
+                    t2 = document.getElementById(`s_${k}_2`).closest('.team-row').querySelector('.team-name').innerText;
+                } else {
+                    t1 = document.getElementById(`t_${k}_1`).innerText;
+                    t2 = document.getElementById(`t_${k}_2`).innerText;
+                }
+                payload.data[k] = { t1, t2, s1, s2 };
+            });
+            try { await addDoc(collection(db, "brackets"), payload); window.location.href = 'results.html'; }
+            catch(e) { alert("שגיאה בשמירה"); }
+        };
+    </script>
 </body>
 </html>
